@@ -1,0 +1,59 @@
+svg.folding-arrow-icon {
+	height: 0.8em;
+	width: 0.8em;
+	vertical-align: baseline;
+
+	> g {
+		transition: transform 0.5s;
+		.folding-arrow.showing > & {
+			transform: rotate(90deg);
+		}
+	}
+	
+	.folding-arrow.showing > &.updown > g {
+		transform: scale(1, -1);
+	}
+	.folding-arrow.showing > &.plus > g {
+		transform: rotate(45deg);
+	}
+}
+
+ul.folding-arrows {
+	list-style-type: none;
+
+	> li.folding-arrow {
+		text-indent: -1.3em;
+		:not(.folding-arrow) { //Notiz: Hier z.B. :not(li.folding.arrow) zu schreiben, funktioniert nicht in Firefox (wohl aber WebKit)!
+			text-indent: 0;
+		}
+	}
+}
+
+
+.burger-icon {
+	width: 2em;
+	height: 2em;
+
+	line {
+		stroke: black;
+		stroke-width: 3;
+
+		.burger.showing &.topline {
+			transform: translate(0px, 10px);
+		}
+		.burger.showing &.bottomline {
+			transform: translate(0px, -10px);
+			opacity: 0;
+			transition: transform 0.5s, opacity 0.5s 0.1s;
+		}
+		.burger.showing &.midline {
+			transform: rotate(-90deg);
+		}
+	}
+	.burger.showing & g {
+		transform: rotate(45deg);
+	}
+	& g, & line {
+		transition: transform  0.5s, opacity 0.1s;
+	}
+}

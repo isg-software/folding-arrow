@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8" />
+	<title>Demo of prependFoldingArrowIcon jQuery plug-in</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="src/jquery-folding-arrow-icon.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/jquery-folding-arrow-icon.css">
+	<script type="text/javascript">
+		$(function(){
+			$("#l1 > li, #l1 ul.folding-arrows > li").prependFoldingArrowIcon();
+			$("#l2 > li").prependFoldingArrowIcon({
+				closePath: false
+			});
+			$("#l3 > li").prependFoldingArrowIcon({
+				viewboxMargin: 2,
+//				separator: "&nbsp;"
+separator: "\u2002"
+			});
+			$("#l4 > li").prependFoldingArrowIcon({
+				graph: [{element: "path", attributes: {"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
+				viewboxRadius: 10,
+				viewboxMargin: 3,
+				closePath: false
+			});
+			$("#l5 > li").prependFoldingArrowIcon({
+				graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r":"10"}},
+						{element: "path", attributes:{"d": "M0,-4 L5,0 L0,5 M-5,0 L4,0"}}],
+				viewboxRadius: 10,
+				viewboxMargin: 1,
+				closePath: false
+			}); 
+			$("#l6 > li").prependFoldingArrowIcon({
+				graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0"}},
+						{element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10"}}],
+				svgClass: "plus-icon",
+				viewboxRadius: 10,
+				viewboxMargin: 1
+			}).setupFoldingArrowIconTransformation({
+				svgClass: "plus-icon",
+				transformations: [{">g": "rotate(45)"}]
+			}); 
+			
+			$("#l7 > li").prependFoldingArrowIcon({
+				preset: "plus"
+			}).setupFoldingArrowIconTransformation({
+				preset: "plus"
+			});
+			
+			$("ul.folding-arrows > li > a").click(function(){
+				openOrCloseLi($(this).parent().prop("id"));
+			});
+			$("ul.folding-arrows > li:not(.showing) > ul").hide();
+			
+			$("#sec1").prependFoldingArrowIcon({
+				closePath: false
+			}).setupFoldingArrowIconTransformation()
+			.click(function(){
+				openOrCloseSection(this.id);
+			});
+			
+			$("#sec1a").appendFoldingArrowIcon({
+				preset: "arrow-up-down",
+				closePath: false
+			}).setupFoldingArrowIconTransformation()
+			.click(function(){
+				openOrCloseSection(this.id);
+			});
+			
+			$("#sec2").prependFoldingArrowIcon({
+				preset: "arrow-up-down",
+				closePath: false,
+				separator: ""
+			}).setupFoldingArrowIconTransformation({
+				preset: "arrow-up-down"
+			})
+			.click(function(){
+				openOrCloseSection(this.id);
+			});
+			
+			var arrowUpDownInCircle = $.fn.prependFoldingArrowIcon.copyOfPreset("arrow-up-down")
+				.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "10"})
+				.prop("viewboxRadius", 10)
+				.prop("viewboxMargin", 0)
+				.prop("closePath", false);
+			$("#sec2a, #sec2b").prependFoldingArrowIcon({
+				preset: arrowUpDownInCircle,
+				separator: ""
+			}).click(function(){
+				openOrCloseSection(this.id);
+			});
+			
+			$("#sec2a").setupFoldingArrowIconTransformation({
+				preset: arrowUpDownInCircle
+			});
+			$("#sec2b").setupFoldingArrowIconTransformation({
+				transformations: [{"path": "scale(1 -1)"}]
+			});
+			
+			$("h2.folding-plus-right").prependFoldingArrowIcon({
+				preset: "plus",
+				viewboxMargin: 3,
+				separator: ""
+			}).setupFoldingArrowIconTransformation({
+				preset: "plus"
+			})
+			.click(function(){
+				openOrCloseSection(this.id);
+			});
+
+			$("h2").each(function() {
+				$(this).next().hide();
+			});
+
+			$("#burger").prependFoldingArrowIcon({
+				preset: "burger"
+			}).setupFoldingArrowIconTransformation({
+				preset: "burger"
+			}).click(function() {
+				openOrClose("burger")
+			});
+		});
+		
+		function openOrClose(id) {
+			return $("#" + id).toggleClass("showing").transformFoldingArrowIcon();
+		}
+		
+		function openOrCloseLi(id) {
+			let li = openOrClose(id);
+			if (li.is(".showing"))
+				$("ul", li).show(500);
+			else
+				$("ul", li).hide(500);
+		}
+		
+		function openOrCloseSection(id) {
+			let h = openOrClose(id);
+			if (h.is(".showing"))
+				h.next().show(500);
+			else
+				h.next().hide(500);
+		}
+	</script>
+	
+	<style type="text/css">	
+	
+		#g1 .folding-arrow-icon path {
+			stroke: none;
+			fill: silver;
+		}
+		
+		#g1b .folding-arrow-icon path {
+			stroke: none;
+			fill: #a00
+		}
+		
+		#g2 .folding-arrow-icon path {
+			stroke: navy;
+			stroke-width: 1;
+			fill: none;
+			stroke-linecap: round;
+		}
+		
+		#g3 .folding-arrow-icon path {
+			stroke: navy;
+			stroke-width: 1;
+			fill: none;
+		}
+		
+		#g4 .folding-arrow-icon path {
+			stroke: green;
+			stroke-width: 2;
+			fill: none;
+		}
+		#g5 .folding-arrow-icon path, circle {
+			stroke: green;
+			stroke-width: 1;
+			fill: none;
+		}
+		#g6 .plus-icon {
+			width: 0.8em;
+			height: 0.8em;
+			vertical-align: baseline;
+		}
+		#g6 .plus-icon line, #g7 .folding-arrow-icon line {
+			stroke: #555;
+			stroke-width: 3;
+		}
+		#g6 .plus-icon g {
+			transition: transform 0.7s;
+		}
+		#g6.showing .plus-icon g {
+			transform: rotate(45deg);
+		}
+		
+		h2.folding-arrow .folding-arrow-icon path {
+			stroke: navy;
+			stroke-width: 2;
+			fill: none;
+		}
+		h2.folding-arrow, h2.folding-plus-right {
+			border: 1px solid silver;
+			background-color: #eee;
+			border-radius: 0.3em;
+			padding: 0.2em;
+			margin-top: 0;
+		}
+		h2.folding-arrow + div > :first-child {
+			margin-top: 0;
+		}
+		h2.folding-arrow + div > :last-child {
+			margin-bottom: 0;
+		}
+		h2.folding-arrow + div {
+			margin-bottom: 2em;
+		}
+		/*
+			Note: the margins above (no top margin of the h2 itself and no top margin
+			for the first child in the hideable content resp no bottom margin for
+			the content's last child are chosen in order to enable a smooth folding animation
+			by jQuery's show() and hide() methods. Margins in these places would cause "jumps"
+			at the start and end of the animation, as the top margin of an element gets usually
+			"merged" with the bottom margin of its next sibling, while during the animation they
+			add up.
+		*/
+		
+		h2.folding-plus-right .folding-arrow-icon line {
+			stroke: #555;
+			stroke-width: 3;
+			stroke-linecap: round;
+		}
+		h2.folding-plus-right .folding-arrow-icon, #sec2 .folding-arrow-icon, #sec2a .folding-arrow-icon, #sec2b .folding-arrow-icon {
+			float: right;
+			width: 1em;
+			height: 1em;
+			margin-top: 0.1em;
+		}
+		
+		#sec2a .folding-arrow-icon circle, #sec2b .folding-arrow-icon circle {
+			stroke: none;
+			fill: #007;
+		}
+		#sec2a .folding-arrow-icon path, #sec2b .folding-arrow-icon path {
+			stroke: white;
+		}
+		
+		#sec2b .folding-arrow-icon > g {
+			transition: none;
+			transform: none;
+		}
+		#sec2b .folding-arrow-icon path {
+			transition: transform 0.5s;
+		}
+		#sec2b.showing .folding-arrow-icon path {
+			transform: scale(1, -1);
+		}
+		
+
+		#burger .burger-icon {
+			width: 40px;
+			height: 40px;
+		} 
+	</style>
+
+</head>
+<body>
+<h1>Demo of prependFoldingArrowIcon jQuery plug-in</h1>
+
+<h2>Introduction</h2>
+<p>When you look at the following examples, you'll most certainly recognize the triangle icons 
+used to indicate whether a (sub)section is visible or collapsed/folded. One of the most common
+usages of such icons is in hierarchical lists to show list items with sub-lists and the state
+of the latter's visibility. For a collapsed sublist, the icon is usually an arrow to the right,
+if it's visible, the arrow points down.</p>
+<p>Since the actual look of the icon is not the major content of the HTML document, but a 
+simply a presentation style, a common way to achieve this is to simply add a class to the 
+foldable list item which represents the logical state (open/visible or closed/collaped/folded).
+The icon being presentation could simply be added by CSS, e.g. with a rule like
+<code>li.open::before(content: url(arrowDown.svg))</code>.</p>
+<p>This CSS-only way with external image files has, however, some disadvantages.
+Especially the sizing /scaling of the image might be trick, and when opening or closing
+the sub list, the image simply gets replaced, so the arrows change without animation.
+These were the main reasons for the development of this plug-in:</p>
+<p>This plug-in dynamically inserts an inline-SVG image into the HTML. Other than externally
+loaded and embedded SVG documents, inline-SVG may be styled by CSS rules of the HTML document.
+So you may (and have to) use CSS to size the icon and to define its properties like stroke,
+line width, fill color etc.</p>
+<p>The plug-in itself doesn't stop there, but is configurable, so you can even (in JavaScript)
+define the actual SVG image. The plug-in however provides some default graphics as presets.</p>
+
+<p><em>Please note: This plug-in concentrates on drawing the SVG icon, which may even
+be animated with CSS transitions. The actual content-folding is not part of this plug-in.
+The following examples add some very simple folding with jQuery's <code>show()</code>
+and <code>hide()</code> methods with a delay argument.</em> These show() and hide()
+mechanism actually needed some tricky CSS tweaks to really run smoothly (only
+for the collapsable secions examples below), please refer to the source code of this page
+if interested.</p>
+
+
+<h2>Foldable list items</h2>
+
+<h3>Defaults</h3>
+
+<p>Let's start the examples with the most common use-case: foldable sub-lists in list items:</p>
+
+<ul id="l1" class="folding-arrows">
+	<li id="g1"><a href="#!">Test list item</a>
+		<br>
+		Second line
+		<ul>
+			<li>sub</li>
+			<li>list</li>
+		</ul>
+	</li>
+	
+	<li id="g1b" class="showing">
+		<a href="#!">Test list item</a>
+		<br>
+		Second line
+		<ul class="folding-arrows">
+			<li>sub<br>still sub</li>
+			<li>list</li>
+		</ul>
+		
+	</li>
+</ul>
+
+<p>The examples above demonstrate the default shape of the folding arrow icon, being a closed
+triangle pointing to the right resp. down. The javascript to include them is quite simple:</p>
+
+<pre><code class="language-javascript">
+$("#l1 > li, #l1 ul.folding-arrows > li").prependFoldingArrowIcon();
+</code></pre>
+
+<p>This JavaScript alone is not enough, since the inserted SVG is unstyled, so you need
+to add some CSS code to define the size and color theme:</p>
+
+<p>This Library already comes with an included CSS file (<code>jquery-folding-arrow-icon.css</code>),
+which defines a default size for the images and the transition for rotating the arrow when
+the CSS class of the list item changes. Specifically for icons in unordered lists,
+it also contains rules which align list items without bullets and with this SVG image
+(inline inside the li's content) neatly with other normally bulleted list items.</p>
+
+<p>But including that CSS file still isn't enough, since it does <em>not</em> define
+the actual look (colors and line with) of the graphic. That, you' still have to define
+on your own (otherwise it will default to a black triangle):</p>
+
+<pre><code class="language-css">
+#g1 .folding-arrow-icon path {
+	stroke: none;
+	fill: silver;
+}
+
+#g1b .folding-arrow-icon path {
+	stroke: none;
+	fill: #a00
+}
+</code></pre>
+
+<h3>Variations</h3>
+
+TODO: Hier die Sources am besten direkt als collabsible sub lists aufnehmen?
+
+<ul id="l2" class="folding-arrows">
+	
+	<li id="g2">
+		<a href="#!">Test list item</a>
+		<ul>
+			<li>Sub</li>
+		</ul>
+	</li>
+</ul>
+<ul id="l3" class="folding-arrows">
+	<li id="g3">
+		<a href="#!">Test list item</a>
+		<ul>
+			<li>Sub</li>
+		</ul>
+	</li>
+</ul>
+<ul id="l4" class="folding-arrows">
+	<li id="g4">
+		<a href="#!">Test list item</a>
+		<ul>
+			<li>Sub</li>
+		</ul>
+	</li>
+</ul>
+<ul id="l5" class="folding-arrows">
+	<li id="g5">
+		<a href="#!">Test list item</a>
+		<ul>
+			<li>Sub</li>
+		</ul>
+	</li>
+</ul>
+
+<ul id="l6" class="folding-arrows">
+	<li id="g6">
+		<a href="#!">Test list item</a>
+		<ul>
+			<li>Sub</li>
+		</ul>
+	</li>
+</ul>
+
+<ul id="l7" class="folding-arrows">
+	<li id="g7">
+		<a href="#!">Test list item</a>
+		<ul>
+			<li>Sub</li>
+		</ul>
+	</li>
+</ul>
+
+<h2 id="sec1">This is a section header</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+<h2 id="sec1a">This is a section header</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+<h2 id="sec2">This is a section header 
+</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+
+<h2 id="sec2a">This is a section header</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+<h2 id="sec2b">This is a section header</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+<h2 class="folding-plus-right" id="sec3">This is a section header</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+<div id="burger"></div>
+
+
+</body>
+</html>
