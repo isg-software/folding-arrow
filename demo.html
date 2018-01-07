@@ -4,9 +4,16 @@
 	<meta charset="utf-8" />
 	<title>Demo of prependFoldingArrowIcon jQuery plug-in</title>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 	<script type="text/javascript" src="src/jquery-folding-arrow-icon.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+
+    <script type="text/javascript" src="examples.js"></script>
+    <link type="text/css" rel="stylesheet" href="examples.css">
+	
 	<link rel="stylesheet" type="text/css" href="dist/jquery-folding-arrow-icon.css">
 	<script type="text/javascript">
+		hljs.initHighlightingOnLoad();
 		$(function(){
 			$("#l1 > li, #l1 ul.folding-arrows > li").prependFoldingArrowIcon();
 			$("#l2 > li").prependFoldingArrowIcon({
@@ -232,7 +239,10 @@ separator: "\u2002"
 			stroke-width: 3;
 			stroke-linecap: round;
 		}
-		h2.folding-plus-right .folding-arrow-icon, #sec2 .folding-arrow-icon, #sec2a .folding-arrow-icon, #sec2b .folding-arrow-icon {
+		h2.folding-plus-right .folding-arrow-icon, 
+		#sec2 .folding-arrow-icon, 
+		#sec2a .folding-arrow-icon, 
+		#sec2b .folding-arrow-icon {
 			float: right;
 			width: 1em;
 			height: 1em;
@@ -342,8 +352,7 @@ if interested.</p>
 <p>The examples above demonstrate the default shape of the folding arrow icon, being a closed
 triangle pointing to the right resp. down. The javascript to include them is quite simple:</p>
 
-<pre><code class="language-javascript">
-$("#l1 > li, #l1 ul.folding-arrows > li").prependFoldingArrowIcon();
+<pre><code class="language-javascript">$("#l1 > li, #l1 ul.folding-arrows > li").prependFoldingArrowIcon();
 </code></pre>
 
 <p>This JavaScript alone is not enough, since the inserted SVG is unstyled, so you need
@@ -359,8 +368,7 @@ it also contains rules which align list items without bullets and with this SVG 
 the actual look (colors and line with) of the graphic. That, you' still have to define
 on your own (otherwise it will default to a black triangle):</p>
 
-<pre><code class="language-css">
-#g1 .folding-arrow-icon path {
+<pre><code class="language-css">#g1 .folding-arrow-icon path {
 	stroke: none;
 	fill: silver;
 }
@@ -370,6 +378,50 @@ on your own (otherwise it will default to a black triangle):</p>
 	fill: #a00
 }
 </code></pre>
+
+<p>Now, you just have to add the class "showing" to a list item if its icon should be
+transformed to a down-pointing arrow, removing the class transforms it back into a 
+right-pointing arrow. Actually, in the example above, the second list item has been
+fitted with a "showing" class statically, that's why it's already unfolded upon
+page load, while the first is folded.</p>
+
+<p>This example page uses the following JavaScript code (for the demo above as well
+as the following ones):</p>
+
+<pre><code class="language-javascript">$(function() {
+	function openOrClose(id) {
+		return $("#" + id).toggleClass("showing").transformFoldingArrowIcon();
+	}
+	function openOrCloseLi(id) {
+		let li = openOrClose(id);
+		if (li.is(".showing"))
+			$("ul", li).show(500);
+		else
+			$("ul", li).hide(500);
+	}
+
+	$("ul.folding-arrows > li > a").click(function(){
+		openOrCloseLi($(this).parent().prop("id"));
+	});
+	$("ul.folding-arrows > li:not(.showing) > ul").hide();
+});
+</code></pre>
+
+<p>Please note the calling of a further jQuery plug-in function provided by this library:
+<code>transformFoldingArrowIcon()</code>. As long as your page is viewed with a browser
+that supports transformations via CSS, this plug-in is not needed, since the loaded
+default CSS already defines the rotation transformation along with a CSS transition.</p>
+
+<p>Unfortunately, the Microsoft browsers (Edge and Internet Explorer) do not support 
+CSS transformations for inline SVG, they require the transformations defined in
+tag attributes inside the SVG code. The <code>transformFoldingArrowIcon()</code>
+function adds or removes such a transformation attribute depending on the current
+state (whether the element has or has not the class "showing"). If called without
+parameters, the default transformation is used.</p>
+
+<p>Please note: If both a transition attribute and a CSS transition are defined for the
+same SVG element, the CSS transition is used and the attribute is ignored.</p>
+
 
 <h3>Variations</h3>
 

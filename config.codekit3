@@ -50,6 +50,26 @@
 		"oAP": "\/dist\/jquery-folding-arrow-icon.css.map",
 		"oF": 0
 		},
+	"\/examples.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "\/examples-min.css",
+		"oF": 0,
+		"oS": 3
+		},
+	"\/examples.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/dist\/examples-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 1
+		},
 	"\/LICENSE": {
 		"cB": 0,
 		"ft": 8192,

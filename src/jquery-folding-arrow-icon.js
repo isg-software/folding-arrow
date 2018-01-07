@@ -147,7 +147,15 @@
 		const opts = expandOptions(options, $.fn.transformFoldingArrowIcon.DEFAULTS);
 		this.each(function() {
 			const current = $(this).data(setupDataName);
-			const update = typeof current === "object" ? $.extend(current, options) : opts;
+			//If no previous setup has been stored yes (current == null, normal case), 
+			//the opts object is stored as setup (shared for any target without existing setup).
+			//If a current setup exists, modify that. But do *not* simply extend the current
+			//setup object, but create a new instance. Reason: The original "current"
+			//might be an object shared (referenced) by several icons (see normal case above), 
+			//and the update might affect only a subset of nodes! Modification of a shared 
+			//object might cause side effects (influence the setup of nodes not selected
+			//by the calling query).
+			const update = typeof current === "object" ? $.extend({}, current, options) : opts;
 			$(this).data(setupDataName, update);
 		});
 		return this;
