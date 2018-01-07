@@ -189,8 +189,8 @@
 			transformations: [{">g": "scale(1 -1)"}]
 		},
 		"plus": {
-			graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0"}},
-					{element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10"}}],
+			graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0", "class": "h"}},
+					{element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10", "class": "v"}}],
 			svgClass: "folding-arrow-icon plus",
 			viewboxRadius: 10,
 			viewboxMargin: 1,

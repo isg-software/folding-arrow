@@ -107,6 +107,9 @@ separator: "\u2002"
 			.click(function(){
 				openOrCloseSection(this.id);
 			});
+			$("#sec4").setupFoldingArrowIconTransformation({
+				transformations: [{"line.v": "scale(1 0)"}]
+			});
 
 			$("h2").each(function() {
 				$(this).next().hide();
@@ -234,6 +237,17 @@ separator: "\u2002"
 			width: 1em;
 			height: 1em;
 			margin-top: 0.1em;
+		}
+		
+		#sec4 .folding-arrow-icon.plus > g {
+			transform: none;
+			transition: none;
+		}
+		#sec4 .folding-arrow-icon.plus line.v {
+			transition: transform 0.7s;
+		}
+		#sec4.showing .folding-arrow-icon.plus line.v {
+			transform: scale(1, 0);
 		}
 		
 		#sec2a .folding-arrow-icon circle, #sec2b .folding-arrow-icon circle {
@@ -441,6 +455,11 @@ TODO: Hier die Sources am besten direkt als collabsible sub lists aufnehmen?
 </div>
 
 <h2 class="folding-plus-right" id="sec3">This is a section header</h2>
+<div>
+	<p>First paragraph of section</p>
+</div>
+
+<h2 class="folding-plus-right" id="sec4">This is a section header</h2>
 <div>
 	<p>First paragraph of section</p>
 </div>
