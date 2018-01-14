@@ -15,6 +15,18 @@ svg.folding-arrow-icon > g {
 .folding-arrow.showing > svg.folding-arrow-icon.plus > g {
   transform: rotate(45deg);
 }
+svg.folding-arrow-icon.plusminus > g {
+  transition: none;
+}
+svg.folding-arrow-icon.plusminus > g line.v {
+  transition: transform 0.5s;
+}
+.folding-arrow.showing > svg.folding-arrow-icon.plusminus > g {
+  transform: none;
+}
+.folding-arrow.showing > svg.folding-arrow-icon.plusminus > g line.v {
+  transform: scale(1, 0);
+}
 ul.folding-arrows {
   list-style-type: none;
 }

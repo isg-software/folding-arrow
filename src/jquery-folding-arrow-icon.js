@@ -220,11 +220,16 @@
 			]
 		}
 	}
-	
-	$.fn.appendFoldingArrowIcon.copyOfPreset =
-	$.fn.prependFoldingArrowIcon.copyOfPreset = function(defaultName) {
+	$.fn.prependFoldingArrowIcon.PRESETS["plusminus"] = copyOfPreset("plus")
+		.prop("svgClass", "folding-arrow-icon plusminus")
+		.prop("transformations", [{"line.v": "scale(1 0)"}])
+		.preset;
+
+	function copyOfPreset(defaultName) {
 		return new PresetCopy(defaultName);
 	}
+	$.fn.appendFoldingArrowIcon.copyOfPreset =
+	$.fn.prependFoldingArrowIcon.copyOfPreset = copyOfPreset;
 	
 	$.fn.appendFoldingArrowIcon.DEFAULTS =
 	$.fn.prependFoldingArrowIcon.DEFAULTS = $.extend({}, {

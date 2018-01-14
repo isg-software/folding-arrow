@@ -10,11 +10,28 @@ svg.folding-arrow-icon {
 		}
 	}
 	
-	.folding-arrow.showing > &.updown > g {
-		transform: scale(1, -1);
+	&.updown > g {
+		.folding-arrow.showing > & {
+			transform: scale(1, -1);
+		}
 	}
-	.folding-arrow.showing > &.plus > g {
-		transform: rotate(45deg);
+	&.plus > g {
+		.folding-arrow.showing > & {
+			transform: rotate(45deg);
+		}
+	}
+	
+	&.plusminus > g {
+		transition: none;
+		line.v {
+            transition: transform 0.5s;
+        }
+        .folding-arrow.showing > & {
+			transform: none;
+			line.v {
+				transform: scale(1, 0);
+			}
+		}
 	}
 }
 
