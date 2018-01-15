@@ -143,6 +143,30 @@
 	
 	const setupDataName = "foldingArrowIconTransformationSetup";
 	
+	function findSVG(me, opts) {
+		return $("> svg" + classSelector(opts.svgClass), me);
+	}
+	
+	function setTitle(me, opts, optSVG) {
+		if (opts.titleShowing || opts.titleHidden) {
+			let svg = optSVG;
+			if (typeof svg === "undefined") 
+				svg = findSVG(me, opts);
+			let titleElement = $("> title", svg);
+			const t = me.is(opts.ifIsSelector) ? opts.titleShowing : opts.titleHidden;
+			if (typeof t === "string") {
+				if (!titleElement.length) {
+					const n = document.createElementNS(NS, "title");
+					svg.prepend(n);
+					titleElement = $(n);
+				}
+				titleElement.text(t);
+			} else {
+				titleElement.text("");
+			}
+		}		
+	}
+	
 	$.fn.setupFoldingArrowIconTransformation = function(options) {
 		const opts = expandOptions(options, $.fn.transformFoldingArrowIcon.DEFAULTS);
 		this.each(function() {
@@ -156,7 +180,10 @@
 			//object might cause side effects (influence the setup of nodes not selected
 			//by the calling query).
 			const update = typeof current === "object" ? $.extend({}, current, options) : opts;
-			$(this).data(setupDataName, update);
+			const me = $(this).data(setupDataName, update);
+			//If the setup defines title attributes, apply initial title now instead of waiting
+			//for the first call of transformFoldingArrowIcon:
+			setTitle(me, opts);
 		});
 		return this;
 	}
@@ -169,10 +196,12 @@
 			if (typeof opts !== "object") {
 				opts = defaults;
 			}
+			const svg = findSVG(me, opts);
+			setTitle(me, opts, svg); //Passing svg as third parameter prohibits redundant selection in the procedure
 			for (let i=0, l=opts.transformations.length; i < l; i++) {
 				let transformation = opts.transformations[i];
 				for (let selector in transformation) {
-					const g = $("> svg" + classSelector(opts.svgClass) + " " + selector, me);
+					const g = $(selector, svg);
 					if (me.is(opts.ifIsSelector)) {
 						g.attr("transform", transformation[selector]);
 					} else {
@@ -250,7 +279,9 @@
 			{
 				"> g": "rotate(90)"
 			}
-		]
+		],
+		titleShowing: undefined,
+		titleHidden: undefined
 	}, $.fn.prependFoldingArrowIcon.DEFAULTS);
 	
 })(jQuery);

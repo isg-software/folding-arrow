@@ -54,10 +54,15 @@ separator: "\u2002"
                 preset: "plus"
             });
             
-            $("ul.folding-arrows > li > a").click(function(){
+            $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
                 openOrCloseLi($(this).parent().prop("id"));
             });
             $("ul.folding-arrows > li:not(.showing) > ul").hide();
+            
+            $("ul.folding-arrows > li").setupFoldingArrowIconTransformation({
+				titleShowing: "fold",
+				titleHidden: "show content"
+			})
             
             $("#sec1").prependFoldingArrowIcon({
                 closePath: false
@@ -127,9 +132,11 @@ separator: "\u2002"
                 openOrCloseSection(this.id);
             });
 
-            $("h2").each(function() {
+            $("h2.sec").each(function() {
                 $(this).next().hide();
-            });
+            }).setupFoldingArrowIconTransformation({
+				titleHidden: "open section"
+			});
 
             $("#burger").prependFoldingArrowIcon({
                 preset: "burger"
@@ -217,7 +224,7 @@ separator: "\u2002"
             stroke-width: 2;
             fill: none;
         }
-        h2.folding-arrow, h2.folding-plus-right {
+        h2.sec {
             border: 1px solid silver;
             background-color: #eee;
             border-radius: 0.3em;
@@ -524,44 +531,44 @@ TODO: Hier die Sources am besten direkt als collabsible sub lists aufnehmen?
     </li>
 </ul>
 
-<h2 id="sec1">This is a section header</h2>
+<h2 class="sec" id="sec1">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 id="sec1a">This is a section header</h2>
+<h2 class="sec" id="sec1a">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 id="sec2">This is a section header 
+<h2 class="sec" id="sec2">This is a section header 
 </h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
 
-<h2 id="sec2a">This is a section header</h2>
+<h2 class="sec" id="sec2a">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 id="sec2b">This is a section header</h2>
+<h2 class="sec" id="sec2b">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 class="folding-plus-right x" id="sec3">This is a section header</h2>
+<h2 class="sec folding-plus-right x" id="sec3">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 class="folding-plus-right x" id="sec4">This is a section header</h2>
+<h2 class="sec folding-plus-right x" id="sec4">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 class="folding-plus-right minus" id="sec4b">This is a section header</h2>
+<h2 class="sec folding-plus-right minus" id="sec4b">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
