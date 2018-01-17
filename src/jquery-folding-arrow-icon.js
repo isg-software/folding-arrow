@@ -267,7 +267,7 @@
 		separator: "&ensp;",
 		viewboxRadius: 5,
 		viewboxMargin: 1,
-		closePath: false,
+		closePath: true,
 		preset: undefined
 	}, $.fn.prependFoldingArrowIcon.PRESETS["arrow-right"]);
 	

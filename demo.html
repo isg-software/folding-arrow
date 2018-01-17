@@ -16,13 +16,11 @@
         hljs.initHighlightingOnLoad();
         $(function(){
             $("#l1 > li, #l1 ul.folding-arrows > li").prependFoldingArrowIcon();
-            $("#l2 > li").prependFoldingArrowIcon({
+            $("#chevron > li").prependFoldingArrowIcon({
                 closePath: false
             });
-            $("#l3 > li").prependFoldingArrowIcon({
-                viewboxMargin: 2,
-//              separator: "&nbsp;"
-separator: "\u2002"
+            $("#outline > li").prependFoldingArrowIcon({
+                viewboxMargin: 2
             });
             $("#l4 > li").prependFoldingArrowIcon({
                 graph: [{element: "path", attributes: {"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
@@ -55,20 +53,20 @@ separator: "\u2002"
             });
             
             $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
-                openOrCloseLi($(this).parent().prop("id"));
+                openOrCloseLi($(this).parent());
             });
             $("ul.folding-arrows > li:not(.showing) > ul").hide();
             
             $("ul.folding-arrows > li").setupFoldingArrowIconTransformation({
-				titleShowing: "fold",
-				titleHidden: "show content"
-			})
+                titleShowing: "fold",
+                titleHidden: "show content"
+            })
             
             $("#sec1").prependFoldingArrowIcon({
                 closePath: false
             }).setupFoldingArrowIconTransformation()
             .click(function(){
-                openOrCloseSection(this.id);
+                openOrCloseSection($(this));
             });
             
             $("#sec1a").appendFoldingArrowIcon({
@@ -76,7 +74,7 @@ separator: "\u2002"
                 closePath: false
             }).setupFoldingArrowIconTransformation()
             .click(function(){
-                openOrCloseSection(this.id);
+                openOrCloseSection($(this));
             });
             
             $("#sec2").prependFoldingArrowIcon({
@@ -87,7 +85,7 @@ separator: "\u2002"
                 preset: "arrow-up-down"
             })
             .click(function(){
-                openOrCloseSection(this.id);
+                openOrCloseSection($(this));
             });
             
             var arrowUpDownInCircle = $.fn.prependFoldingArrowIcon.copyOfPreset("arrow-up-down")
@@ -99,7 +97,7 @@ separator: "\u2002"
                 preset: arrowUpDownInCircle,
                 separator: ""
             }).click(function(){
-                openOrCloseSection(this.id);
+                openOrCloseSection($(this));
             });
             
             $("#sec2a").setupFoldingArrowIconTransformation({
@@ -117,50 +115,50 @@ separator: "\u2002"
                 preset: "plus"
             })
             .click(function(){
-                openOrCloseSection(this.id);
+                openOrCloseSection($(this));
             });
             $("#sec4").setupFoldingArrowIconTransformation({
                 transformations: [{"line.v": "scale(1 0)"}]
             });
             $("h2.folding-plus-right.minus").prependFoldingArrowIcon({
-				preset: "plusminus",
+                preset: "plusminus",
                 viewboxMargin: 3,
                 separator: ""
             }).setupFoldingArrowIconTransformation({
                 preset: "plusminus"
             }).click(function(){
-                openOrCloseSection(this.id);
+                openOrCloseSection($(this));
             });
 
             $("h2.sec").each(function() {
                 $(this).next().hide();
             }).setupFoldingArrowIconTransformation({
-				titleHidden: "open section"
-			});
+                titleHidden: "open section"
+            });
 
             $("#burger").prependFoldingArrowIcon({
                 preset: "burger"
             }).setupFoldingArrowIconTransformation({
                 preset: "burger"
             }).click(function() {
-                openOrClose("burger")
+                openOrClose($("#burger"));
             });
         });
         
-        function openOrClose(id) {
-            return $("#" + id).toggleClass("showing").transformFoldingArrowIcon();
+        function openOrClose(jqr) {
+            return jqr.toggleClass("showing").transformFoldingArrowIcon();
         }
         
-        function openOrCloseLi(id) {
-            let li = openOrClose(id);
+        function openOrCloseLi(li) {
+            openOrClose(li);
             if (li.is(".showing"))
                 $("ul", li).show(500);
             else
                 $("ul", li).hide(500);
         }
         
-        function openOrCloseSection(id) {
-            let h = openOrClose(id);
+        function openOrCloseSection(h) {
+            openOrClose(h);
             if (h.is(".showing"))
                 h.next().show(500);
             else
@@ -180,14 +178,14 @@ separator: "\u2002"
             fill: #a00
         }
         
-        #g2 .folding-arrow-icon path {
+        #chevron .folding-arrow-icon path {
             stroke: navy;
             stroke-width: 1;
             fill: none;
             stroke-linecap: round;
         }
         
-        #g3 .folding-arrow-icon path {
+        #outline .folding-arrow-icon path {
             stroke: navy;
             stroke-width: 1;
             fill: none;
@@ -441,19 +439,20 @@ to display the folding state like – but not limited to – using this icon plu
 as the following ones) in order to show and hide sub-lists:</p>
 
 <pre><code class="language-javascript">$(function() {
-    function openOrClose(id) {
-        return $("#" + id).toggleClass("showing").transformFoldingArrowIcon();
+    function openOrClose(jqr) {
+        return jqr.toggleClass("showing").transformFoldingArrowIcon();
     }
-    function openOrCloseLi(id) {
-        let li = openOrClose(id);
+    
+    function openOrCloseLi(li) {
+        openOrClose(li);
         if (li.is(".showing"))
             $("ul", li).show(500);
         else
             $("ul", li).hide(500);
     }
 
-    $("ul.folding-arrows > li > a").click(function(){
-        openOrCloseLi($(this).parent().prop("id"));
+    $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
+        openOrCloseLi($(this).parent());
     });
     $("ul.folding-arrows > li:not(.showing) > ul").hide();
 });
@@ -476,23 +475,61 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
 
 
 <h3>Variations</h3>
-
-TODO: Hier die Sources am besten direkt als collabsible sub lists aufnehmen?
-
-<ul id="l2" class="folding-arrows">
-    
-    <li id="g2">
-        <a href="#!">Test list item</a>
+<p>Click a variation list item in order to view the description and code samples.</p>
+<ul id="outline" class="folding-arrows">
+    <li>
+        <a href="#!">Outline (closed path)</a>
         <ul>
-            <li>Sub</li>
+            <li>This example differs from the default above mainly in the CSS formatting:
+                The arrow is not filled, but a stroke is defined:
+                <pre><code class="language-css">#outline .folding-arrow-icon path {
+    stroke: navy;
+    stroke-width: 1;
+    fill: none;
+}</code></pre>
+            </li>
+            <li>Also, the JavaScript method gets passed an options object literal with
+                exactly one option: <code>viewboxMargin</code>, which defaults to 1,
+                is overridden to be 2. This increases the margin around the image inside
+                the SVG area a little, because due to the stroke with the triangle icon
+                would otherwise be slightly larger than the filled one without stroke, and
+                during the rotation transition, the edges of the triangle would exceed
+                the visible image area, i.e. be clipped:
+                <pre><code class="language-javascript">$("#outline > li").prependFoldingArrowIcon({
+   viewboxMargin: 2
+});</code></pre>
+            </li>
         </ul>
     </li>
 </ul>
-<ul id="l3" class="folding-arrows">
-    <li id="g3">
-        <a href="#!">Test list item</a>
+<ul id="chevron" class="folding-arrows">
+    <li>
+        <a href="#!">Chevron (unclosed path)</a>
         <ul>
-            <li>Sub</li>
+            <li>This example is nearly the same as the outline example before, with two differences:
+                <ol>
+                    <li>The Javascript omits the larger <code>viewportMargin</code>, resulting
+                    in a slightly larger graphic and accepting a slight clipping during the
+                    rotation transition, which hardly is noticable in this case (with the closed
+                    triangle, it would be easier to notice).</li>
+                    <li>Instead, the JavaScript sets the <code>closePath</code> option to false.
+                    The triangle arrow is in fact acutally defined as a the chevron path you
+                    see here, but the option <code>closePath</code>, which defaults to true,
+                    will cause this main path to be closed. This default behaviour is now turned
+                    off, resulting in the “raw chevron path” to be drawn.
+                    <pre><code class="language-javascript">$("#chevron > li").prependFoldingArrowIcon({
+    closePath: false
+});</code></pre>
+                    </li>
+                    <li>Since the path now has to open line ends, we can define the style of those
+                    via CSS. Here, rounded line caps have been chosen.
+                    <pre><code class="language-css">#chevron .folding-arrow-icon path {
+    stroke: navy;
+    stroke-width: 1;
+    fill: none;
+    stroke-linecap: round;
+}</code></pre></li>
+                </ol>
         </ul>
     </li>
 </ul>
