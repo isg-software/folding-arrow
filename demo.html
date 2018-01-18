@@ -22,7 +22,7 @@
             $("#outline > li").prependFoldingArrowIcon({
                 viewboxMargin: 2
             });
-            $("#l4 > li").prependFoldingArrowIcon({
+            $("#custom-arrow > li").prependFoldingArrowIcon({
                 graph: [{element: "path", attributes: {"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
                 viewboxRadius: 10,
                 viewboxMargin: 3,
@@ -191,7 +191,7 @@
             fill: none;
         }
         
-        #g4 .folding-arrow-icon path {
+        #custom-arrow .folding-arrow-icon path {
             stroke: green;
             stroke-width: 2;
             fill: none;
@@ -533,11 +533,56 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
         </ul>
     </li>
 </ul>
-<ul id="l4" class="folding-arrows">
-    <li id="g4">
-        <a href="#!">Test list item</a>
+<ul id="custom-arrow" class="folding-arrows">
+    <li>
+        <a href="#!">Defining a custom SVG arrow icon</a>
         <ul>
-            <li>Sub</li>
+            <li>Instead of using the default triangle icon, you may define your own SVG code for
+            	drawing an arrow. The arrow icon above has been defined as follows:</li>
+            <li><pre><code class="language-javascript">$("#custom-arrow > li").prependFoldingArrowIcon({
+	graph: [{element: "path", attributes: {"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
+	viewboxRadius: 10,
+	viewboxMargin: 3,
+	closePath: false
+});</code></pre></li>
+			<li>Description of the options:
+				<ul>
+					<li><code>graph</code> defines the main SVG code. You define an array of SVG elements.
+						Each element of the array is an object with two properties: <code>element</code>
+						defines the element/tag name of the SVG element, and <code>attributes</code>
+						is an object ob key/value pairs defining a list of attributes to insert into
+						that tag.<br>
+						The <code>graph</code> array above thus specifies the following SVG tag:
+						<pre><code class="language-svg">&lt;path d="M0,-9 L10,0 L0,10 M-10,0 L8,0"/&gt;</code></pre>
+					</li>
+					<li>All elements of the <code>graph</code> are internally grouped into one 
+						group element (<code>g</code>).</li>
+					<li>When defining the coordinate values for the path, please note that the
+						origin, i.e. the point (0, 0) is always centered in the generated SVG icon.
+						The <code>viewboxRadius</code> option defines the radius of the viewport,
+						i.e. the visible part of the coordinate system. Acutally the viewport is
+						a square, in this case (radius 10) the point (-10, -10) is the upper left corner
+						and (10, 10) the lower right corner.</li>
+					<li>While the <code>viewboxRadius</code> defines the size of the square area
+						into which the <code>graph</code> shoult fit, the option <code>viewboxMargin</code>
+						defines the width of a margin around that graph.<br>
+						Actually both options simply are added to define the top left corner
+						and the size of the viewport. The separation into two options instead of one
+						is simply for better readability of the options.</li>
+					<li>The <code>closePath</code> option has already been introduced in an
+						earlier example. If set to true, a <code>z</code> will be appended to
+						every path attribute of the graph, which will add a connecting line
+						between the start point and the end point of the path. In this case,
+						that's not desirable, so it's turned off.</li>
+				</ul>
+			</li>
+			<li>Besides the Script code, we again need some CSS to format the styles of the 
+				icon (no filling, but instead a green stroke):</li>
+            <li><pre><code class="language-css">#custom-arrow .folding-arrow-icon path {
+	stroke: green;
+	stroke-width: 2;
+	fill: none;
+}</code></pre></li>
         </ul>
     </li>
 </ul>
