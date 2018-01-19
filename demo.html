@@ -28,14 +28,21 @@
                 viewboxMargin: 3,
                 closePath: false
             });
-            $("#l5 > li").prependFoldingArrowIcon({
-                graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r":"10"}},
-                        {element: "path", attributes:{"d": "M0,-4 L5,0 L0,5 M-5,0 L4,0"}}],
-                viewboxRadius: 10,
-                viewboxMargin: 1,
+            $("#custom-arrow-circle > li").prependFoldingArrowIcon({
+                graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r":"20"}},
+                        {element: "path", attributes:{"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
+                viewboxRadius: 20,
+                viewboxMargin: 2,
                 closePath: false
             }); 
-            $("#l6 > li").prependFoldingArrowIcon({
+            
+            
+            $("#plus-preset > li").prependFoldingArrowIcon({
+                preset: "plus"
+            }).setupFoldingArrowIconTransformation({
+                preset: "plus"
+            });
+            $("#plus-manual > li").prependFoldingArrowIcon({
                 graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0"}},
                         {element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10"}}],
                 svgClass: "plus-icon",
@@ -44,13 +51,22 @@
             }).setupFoldingArrowIconTransformation({
                 svgClass: "plus-icon",
                 transformations: [{">g": "rotate(45)"}]
-            }); 
-            
-            $("#l7 > li").prependFoldingArrowIcon({
-                preset: "plus"
-            }).setupFoldingArrowIconTransformation({
-                preset: "plus"
             });
+            
+            $("#plus-circle1 > li").prependFoldingArrowIcon({
+            	preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+                .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "20"}),
+				viewboxRadius: 20,
+				viewboxMargin: 3
+            });
+            
+            $("#plus-circle2 > li").prependFoldingArrowIcon({
+            	preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+                .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "20"})
+                .prop("viewboxRadius", 20)
+                .prop("viewboxMargin", 3)
+            });
+
             
             $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
                 openOrCloseLi($(this).parent());
@@ -196,26 +212,31 @@
             stroke-width: 2;
             fill: none;
         }
-        #g5 .folding-arrow-icon path, circle {
+        #custom-arrow-circle .folding-arrow-icon path, #custom-arrow-circle .folding-arrow-icon path circle {
             stroke: green;
-            stroke-width: 1;
+            stroke-width: 3;
             fill: none;
         }
-        #g6 .plus-icon {
+        #plus-preset .plus line, #plus-manual .plus-icon line {
+            stroke: #555;
+            stroke-width: 3;
+        }
+        #plus-manual .plus-icon {
             width: 0.8em;
             height: 0.8em;
             vertical-align: baseline;
         }
-        #g6 .plus-icon line, #g7 .folding-arrow-icon line {
-            stroke: #555;
-            stroke-width: 3;
-        }
-        #g6 .plus-icon g {
+        #plus-manual .plus-icon g {
             transition: transform 0.7s;
         }
-        #g6.showing .plus-icon g {
+        #plus-manual li.showing .plus-icon g {
             transform: rotate(45deg);
         }
+		ul.plus-circle .plus line, ul.plus-circle .plus circle {
+			stroke: #555;
+            stroke-width: 4;
+            fill: none;
+		}
         
         h2.folding-arrow .folding-arrow-icon path {
             stroke: navy;
@@ -566,9 +587,14 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
 					<li>While the <code>viewboxRadius</code> defines the size of the square area
 						into which the <code>graph</code> shoult fit, the option <code>viewboxMargin</code>
 						defines the width of a margin around that graph.<br>
-						Actually both options simply are added to define the top left corner
-						and the size of the viewport. The separation into two options instead of one
-						is simply for better readability of the options.</li>
+						Please note: In this example the path “touches the edges” of the 20x20 square,
+						but since the shape is not filled, but a stroke width is defined, the image
+						is actually a little larger. The <code>viewboxMargin</code> should therefore
+						be at least half the stroke-width!</li>
+					<li>Actually <code>viewboxRadius</code> and <code>viewboxMargin</code> are simply
+						added to define the top left corner and the size of the viewport. 
+						The separation into two options instead of one
+						is simply for better readability/maintainability of the options.</li>
 					<li>The <code>closePath</code> option has already been introduced in an
 						earlier example. If set to true, a <code>z</code> will be appended to
 						every path attribute of the graph, which will add a connecting line
@@ -586,8 +612,49 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
         </ul>
     </li>
 </ul>
-<ul id="l5" class="folding-arrows">
-    <li id="g5">
+<ul id="custom-arrow-circle" class="folding-arrows">
+    <li>
+        <a href="#!">Adding a circle to the image</a>
+        <ul>
+            <li>This example is a simple variation of the previous one. The following modifications 
+            	have been made:
+            	<ul>
+            		<li>The path has been kept unchanged, but a second SVG element has been added
+            			to the <code>graph</code> array: a circle around the center coordinate (0, 0)
+            			with a radius of 20.</li>
+            		<li>In order to include that circle into the visible part of the image (viewport),
+            			the <code>viewportRadius</code> is set to the radius of the circle (20).<br>
+            			The resulting image has doubled in size. Note that the actual size in the browser
+            			is defined by CSS rules and, in this case, stays the same. The 40x40px SVG is simply
+            			scaled to fit, so in this case the image gets scaled down, the arrow shrinks.</li>
+            		<li>Since the actual image size shrinks by 50%, also the resulting stroke width would
+            			be halved. In order to compensate that a litte, the stroke width gets increased via CSS,
+            			in this case to 3, the stroke width is now three quarter compared to the
+            			previous example.</li>
+            		<li>The <code>viewboxMargin</code> should be at least half the stroke width, since 
+            			half of the stroke width is applied inside the logical line of the circle, the
+            			other half outside (in the margin area). So we set it to 2.</li>
+            	</ul>
+            </li>
+            <li><pre><code class="language-javascript">$("#custom-arrow-circle > li").prependFoldingArrowIcon({
+	graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r":"20"}},
+			{element: "path", attributes:{"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
+	viewboxRadius: 20,
+	viewboxMargin: 2,
+	closePath: false
+});</code></pre>
+            </li>
+            <li><pre><code class="language-css">#custom-arrow-circle .folding-arrow-icon path, circle {
+	stroke: green;
+	stroke-width: 3;
+	fill: none;
+}</code></pre></li>
+        </ul>
+    </li>
+</ul>
+
+<ul id="plus-preset" class="folding-arrows">
+    <li>
         <a href="#!">Test list item</a>
         <ul>
             <li>Sub</li>
@@ -595,8 +662,8 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
     </li>
 </ul>
 
-<ul id="l6" class="folding-arrows">
-    <li id="g6">
+<ul id="plus-manual" class="folding-arrows">
+    <li>
         <a href="#!">Test list item</a>
         <ul>
             <li>Sub</li>
@@ -604,9 +671,18 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
     </li>
 </ul>
 
-<ul id="l7" class="folding-arrows">
-    <li id="g7">
-        <a href="#!">Test list item</a>
+<ul id="plus-circle1" class="folding-arrows plus-circle">
+    <li>
+        <a href="#!">Combine preset with circle</a>
+        <ul>
+            <li>Sub</li>
+        </ul>
+    </li>
+</ul>
+
+<ul id="plus-circle2" class="folding-arrows plus-circle">
+    <li>
+        <a href="#!">Combine preset with circle</a>
         <ul>
             <li>Sub</li>
         </ul>
