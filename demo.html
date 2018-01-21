@@ -36,34 +36,35 @@
                 closePath: false
             }); 
             
+            $("#plus-manual > li").prependFoldingArrowIcon({
+                graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0"}},
+                        {element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10"}}],
+                svgClass: "folding-arrow-icon my-plus",
+                viewboxRadius: 10,
+                viewboxMargin: 1
+            }).setupFoldingArrowIconTransformation({
+                svgClass: "folding-arrow-icon my-plus",
+                transformations: [{">g": "rotate(45)"}]
+            });
             
+
             $("#plus-preset > li").prependFoldingArrowIcon({
                 preset: "plus"
             }).setupFoldingArrowIconTransformation({
                 preset: "plus"
             });
-            $("#plus-manual > li").prependFoldingArrowIcon({
-                graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0"}},
-                        {element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10"}}],
-                svgClass: "plus-icon",
-                viewboxRadius: 10,
-                viewboxMargin: 1
-            }).setupFoldingArrowIconTransformation({
-                svgClass: "plus-icon",
-                transformations: [{">g": "rotate(45)"}]
-            });
             
             $("#plus-circle1 > li").prependFoldingArrowIcon({
-            	preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
-                .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "20"}),
-				viewboxRadius: 20,
-				viewboxMargin: 3
+                preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+                .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"}),
+                viewboxRadius: 17,
+                viewboxMargin: 3
             });
             
             $("#plus-circle2 > li").prependFoldingArrowIcon({
-            	preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
-                .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "20"})
-                .prop("viewboxRadius", 20)
+                preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+                .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"})
+                .prop("viewboxRadius", 17)
                 .prop("viewboxMargin", 3)
             });
 
@@ -212,31 +213,31 @@
             stroke-width: 2;
             fill: none;
         }
-        #custom-arrow-circle .folding-arrow-icon path, #custom-arrow-circle .folding-arrow-icon path circle {
+        #custom-arrow-circle .folding-arrow-icon path, #custom-arrow-circle .folding-arrow-icon circle {
             stroke: green;
             stroke-width: 3;
             fill: none;
         }
-        #plus-preset .plus line, #plus-manual .plus-icon line {
+
+        .folding-arrow.showing > svg.folding-arrow-icon.my-plus > g {
+            transform: rotate(135deg);
+        }
+        .my-plus line {
+            stroke: navy;
+            stroke-width: 2;
+        }
+        
+        
+        #plus-preset .plus line {
             stroke: #555;
             stroke-width: 3;
         }
-        #plus-manual .plus-icon {
-            width: 0.8em;
-            height: 0.8em;
-            vertical-align: baseline;
-        }
-        #plus-manual .plus-icon g {
-            transition: transform 0.7s;
-        }
-        #plus-manual li.showing .plus-icon g {
-            transform: rotate(45deg);
-        }
-		ul.plus-circle .plus line, ul.plus-circle .plus circle {
-			stroke: #555;
+        
+        ul.plus-circle .plus line, ul.plus-circle .plus circle {
+            stroke: #555;
             stroke-width: 4;
             fill: none;
-		}
+        }
         
         h2.folding-arrow .folding-arrow-icon path {
             stroke: navy;
@@ -559,55 +560,55 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
         <a href="#!">Defining a custom SVG arrow icon</a>
         <ul>
             <li>Instead of using the default triangle icon, you may define your own SVG code for
-            	drawing an arrow. The arrow icon above has been defined as follows:</li>
+                drawing an arrow. The arrow icon above has been defined as follows:</li>
             <li><pre><code class="language-javascript">$("#custom-arrow > li").prependFoldingArrowIcon({
-	graph: [{element: "path", attributes: {"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
-	viewboxRadius: 10,
-	viewboxMargin: 3,
-	closePath: false
+    graph: [{element: "path", attributes: {"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
+    viewboxRadius: 10,
+    viewboxMargin: 3,
+    closePath: false
 });</code></pre></li>
-			<li>Description of the options:
-				<ul>
-					<li><code>graph</code> defines the main SVG code. You define an array of SVG elements.
-						Each element of the array is an object with two properties: <code>element</code>
-						defines the element/tag name of the SVG element, and <code>attributes</code>
-						is an object ob key/value pairs defining a list of attributes to insert into
-						that tag.<br>
-						The <code>graph</code> array above thus specifies the following SVG tag:
-						<pre><code class="language-svg">&lt;path d="M0,-9 L10,0 L0,10 M-10,0 L8,0"/&gt;</code></pre>
-					</li>
-					<li>All elements of the <code>graph</code> are internally grouped into one 
-						group element (<code>g</code>).</li>
-					<li>When defining the coordinate values for the path, please note that the
-						origin, i.e. the point (0, 0) is always centered in the generated SVG icon.
-						The <code>viewboxRadius</code> option defines the radius of the viewport,
-						i.e. the visible part of the coordinate system. Acutally the viewport is
-						a square, in this case (radius 10) the point (-10, -10) is the upper left corner
-						and (10, 10) the lower right corner.</li>
-					<li>While the <code>viewboxRadius</code> defines the size of the square area
-						into which the <code>graph</code> shoult fit, the option <code>viewboxMargin</code>
-						defines the width of a margin around that graph.<br>
-						Please note: In this example the path “touches the edges” of the 20x20 square,
-						but since the shape is not filled, but a stroke width is defined, the image
-						is actually a little larger. The <code>viewboxMargin</code> should therefore
-						be at least half the stroke-width!</li>
-					<li>Actually <code>viewboxRadius</code> and <code>viewboxMargin</code> are simply
-						added to define the top left corner and the size of the viewport. 
-						The separation into two options instead of one
-						is simply for better readability/maintainability of the options.</li>
-					<li>The <code>closePath</code> option has already been introduced in an
-						earlier example. If set to true, a <code>z</code> will be appended to
-						every path attribute of the graph, which will add a connecting line
-						between the start point and the end point of the path. In this case,
-						that's not desirable, so it's turned off.</li>
-				</ul>
-			</li>
-			<li>Besides the Script code, we again need some CSS to format the styles of the 
-				icon (no filling, but instead a green stroke):</li>
+            <li>Description of the options:
+                <ul>
+                    <li><code>graph</code> defines the main SVG code. You define an array of SVG elements.
+                        Each element of the array is an object with two properties: <code>element</code>
+                        defines the element/tag name of the SVG element, and <code>attributes</code>
+                        is an object ob key/value pairs defining a list of attributes to insert into
+                        that tag.<br>
+                        The <code>graph</code> array above thus specifies the following SVG tag:
+                        <pre><code class="language-svg">&lt;path d="M0,-9 L10,0 L0,10 M-10,0 L8,0"/&gt;</code></pre>
+                    </li>
+                    <li>All elements of the <code>graph</code> are internally grouped into one 
+                        group element (<code>g</code>).</li>
+                    <li>When defining the coordinate values for the path, please note that the
+                        origin, i.e. the point (0, 0) is always centered in the generated SVG icon.
+                        The <code>viewboxRadius</code> option defines the radius of the viewport,
+                        i.e. the visible part of the coordinate system. Acutally the viewport is
+                        a square, in this case (radius 10) the point (-10, -10) is the upper left corner
+                        and (10, 10) the lower right corner.</li>
+                    <li>While the <code>viewboxRadius</code> defines the size of the square area
+                        into which the <code>graph</code> shoult fit, the option <code>viewboxMargin</code>
+                        defines the width of a margin around that graph.<br>
+                        Please note: In this example the path “touches the edges” of the 20x20 square,
+                        but since the shape is not filled, but a stroke width is defined, the image
+                        is actually a little larger. The <code>viewboxMargin</code> should therefore
+                        be at least half the stroke-width!</li>
+                    <li>Actually <code>viewboxRadius</code> and <code>viewboxMargin</code> are simply
+                        added to define the top left corner and the size of the viewport. 
+                        The separation into two options instead of one
+                        is simply for better readability/maintainability of the options.</li>
+                    <li>The <code>closePath</code> option has already been introduced in an
+                        earlier example. If set to true, a <code>z</code> will be appended to
+                        every path attribute of the graph, which will add a connecting line
+                        between the start point and the end point of the path. In this case,
+                        that's not desirable, so it's turned off.</li>
+                </ul>
+            </li>
+            <li>Besides the Script code, we again need some CSS to format the styles of the 
+                icon (no filling, but instead a green stroke):</li>
             <li><pre><code class="language-css">#custom-arrow .folding-arrow-icon path {
-	stroke: green;
-	stroke-width: 2;
-	fill: none;
+    stroke: green;
+    stroke-width: 2;
+    fill: none;
 }</code></pre></li>
         </ul>
     </li>
@@ -617,37 +618,132 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
         <a href="#!">Adding a circle to the image</a>
         <ul>
             <li>This example is a simple variation of the previous one. The following modifications 
-            	have been made:
-            	<ul>
-            		<li>The path has been kept unchanged, but a second SVG element has been added
-            			to the <code>graph</code> array: a circle around the center coordinate (0, 0)
-            			with a radius of 20.</li>
-            		<li>In order to include that circle into the visible part of the image (viewport),
-            			the <code>viewportRadius</code> is set to the radius of the circle (20).<br>
-            			The resulting image has doubled in size. Note that the actual size in the browser
-            			is defined by CSS rules and, in this case, stays the same. The 40x40px SVG is simply
-            			scaled to fit, so in this case the image gets scaled down, the arrow shrinks.</li>
-            		<li>Since the actual image size shrinks by 50%, also the resulting stroke width would
-            			be halved. In order to compensate that a litte, the stroke width gets increased via CSS,
-            			in this case to 3, the stroke width is now three quarter compared to the
-            			previous example.</li>
-            		<li>The <code>viewboxMargin</code> should be at least half the stroke width, since 
-            			half of the stroke width is applied inside the logical line of the circle, the
-            			other half outside (in the margin area). So we set it to 2.</li>
-            	</ul>
+                have been made:
+                <ul>
+                    <li>The path has been kept unchanged, but a second SVG element has been added
+                        to the <code>graph</code> array: a circle around the center coordinate (0, 0)
+                        with a radius of 20.</li>
+                    <li>In order to include that circle into the visible part of the image (viewport),
+                        the <code>viewportRadius</code> is set to the radius of the circle (20).<br>
+                        The resulting image has doubled in size. Note that the actual size in the browser
+                        is defined by CSS rules and, in this case, stays the same. The 40x40px SVG is simply
+                        scaled to fit, so in this case the image gets scaled down, the arrow shrinks.</li>
+                    <li>Since the actual image size shrinks by 50%, also the resulting stroke width would
+                        be halved. In order to compensate that a litte, the stroke width gets increased via CSS,
+                        in this case to 3, the stroke width is now three quarter compared to the
+                        previous example.</li>
+                    <li>The <code>viewboxMargin</code> should be at least half the stroke width, since 
+                        half of the stroke width is applied inside the logical line of the circle, the
+                        other half outside (in the margin area). So we set it to 2.</li>
+                </ul>
             </li>
             <li><pre><code class="language-javascript">$("#custom-arrow-circle > li").prependFoldingArrowIcon({
-	graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r":"20"}},
-			{element: "path", attributes:{"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
-	viewboxRadius: 20,
-	viewboxMargin: 2,
-	closePath: false
+    graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r":"20"}},
+            {element: "path", attributes:{"d": "M0,-9 L10,0 L0,10 M-10,0 L8,0"}}],
+    viewboxRadius: 20,
+    viewboxMargin: 2,
+    closePath: false
 });</code></pre>
             </li>
             <li><pre><code class="language-css">#custom-arrow-circle .folding-arrow-icon path, circle {
-	stroke: green;
-	stroke-width: 3;
-	fill: none;
+    stroke: green;
+    stroke-width: 3;
+    fill: none;
+}</code></pre></li>
+        </ul>
+    </li>
+</ul>
+
+<ul id="plus-manual" class="folding-arrows">
+    <li>
+        <a href="#!">Custom non-circle-image with different transition</a>
+        <ul>
+            <li><strong>Please note: If you like this example, you don't have to copy it!</strong>
+                This demo is only to show you how to use the plug-in's options to create some image
+                and transition of your choice. The actual example of the plus icon with 
+                a 45-degree-rotation transition is also available as a simple preset, see next example!
+            </li>
+            <li>Similarly to the previous two examples, this one uses the <code>graph</code> option
+                to define the SVG image, this time consisting of two lines forming a plus.
+                The <code>viewboxRadius</code> is set to the width resp. height of the horizontal resp.
+                vertical line.
+            </li>
+            <li>The previous examples all inherited the default transformation (rotation of 90°
+                to the right) when unfolding the list entry. Like explained above, this is defined in
+                two ways:
+                <ol>
+                    <li>The included CSS file <code>jquery-folding-arrow-icon.css</code> defines
+                        the transformation and a transition (animation) by the following rules:
+                        <pre><code class="language-css">svg.folding-arrow-icon > g {
+  transition: transform 0.5s;
+}
+.folding-arrow.showing > svg.folding-arrow-icon > g {
+  transform: rotate(90deg);
+}</code></pre></li>
+                    <li>For compatibility with Microsoft Browsers, all these examples call the
+                        <code>transformFoldingArrowIcon()</code> plug-in function, see the 
+                        <code>function openOrClose(jqr)</code> defined above. This
+                        function adds or removes transformation attributes to resp. from 
+                        SVG node(s). The default action is to add a 90deg right rotation
+                        transformation to the <code>g</code> node, the group holding
+                        the entire graph defined by the <code>graph</code> option.
+                    </li>
+                </ol>
+                <em>This</em> example however should <em>not</em> inherit this default 
+                transformation, for obvious reasons: a plus sign rotated by 90° looks
+                identical to its unrotated form.<br>
+                So we want to override both of the mechanisms described above:
+                <ol>
+                    <li>We use the <code>svgClass</code> option to assign a
+                        second class name (<code>my-plus</code>) to the <code>svg</code> element. 
+                        Yet, by also keeping the default class name (<code>folding-arrow-icon</code>), 
+                        the default rules still apply. <br>
+                        Then we add a more specific CSS rule to override just the transformation 
+                        definition for elements of our <code>my-plus</code> class, setting the
+                        transition to 45 degrees.—Actually, to set this example apart from
+                        the preset shown in the next example, let's vary the angle to 135°.
+                        The result will look the same, but the transition (animation) looks
+                        different, since the plus rotates further and faster.
+                    </li>
+                    <li>In order to override the transformation attribute definition used
+                        by the <code>transformFoldingArrowIcon()</code> plug-in function,
+                        we add a <code>setupFoldingArrowIconTransformation()</code> call to
+                        the <code>prependFoldingArrowIcon()</code> call. Here we pass two
+                        options: 
+                        <ul>
+                            <li><code>svgClass</code> holds class name used for finding the CSS node inside the
+                                list item on which the <code>tronsfromFoldingArrowIcon()</code> function
+                                is called. This should normally math the <code>svgClass</code> option passed
+                                to <code>prependFoldingArrowIcon()</code>.</li>
+                            <li><code>transformations</code> holds an array of key-value-pairs,
+                                each of which defines a node selector as key and a the value for the
+                                <code>transformation</code> attribute which should be added to the
+                                selected node upon unfolding.<br>
+                                In this case we define that a rotation of 45 degrees is to be added
+                                to the first <code>g</code> node in the CSS DOM, i.e. the group consisting
+                                of the two crossed lines.
+                                </li>
+                        </ul>
+                    </li>                           
+                </ol>
+            </li>
+            <li>So, the resulting code for this example looks like this:</li>
+            <li><pre><code class="language-javascript">$("#plus-manual > li").prependFoldingArrowIcon({
+    graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0"}},
+            {element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10"}}],
+    svgClass: "folding-arrow-icon my-plus",
+    viewboxRadius: 10,
+    viewboxMargin: 1
+}).setupFoldingArrowIconTransformation({
+    svgClass: "folding-arrow-icon my-plus",
+    transformations: [{">g": "rotate(45)"}]
+});</code></pre></li>
+            <li><pre><code class="language-css">.folding-arrow.showing > svg.folding-arrow-icon.my-plus > g {
+    transform: rotate(135deg);
+}
+.my-plus line {
+    stroke: navy;
+    stroke-width: 2;
 }</code></pre></li>
         </ul>
     </li>
@@ -655,21 +751,43 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
 
 <ul id="plus-preset" class="folding-arrows">
     <li>
-        <a href="#!">Test list item</a>
+        <a href="#!">Plus-X-Preset</a>
         <ul>
-            <li>Sub</li>
+            <li>This example is mostly identical to the previous one (except for different local
+                CSS styles), but its simpler to use since it uses a built-in preset to define
+                the plus and its rotation instead of defining it locally in the example itself.</li>
+            <li>The plug-in contains several presets. A preset can be easily loaded by simply
+                using the <code>preset</code> option with the preset name (as string value).</li>
+            <li>Since not only the SVG graph itself should apply a preset differing from the 
+                default preset (triangle arrow to the right), but also the non-CSS transformation
+                for Microsoft browsers IE &amp; Edge, you'll also have to call the 
+                <code>setupFoldingArrowIconTransformation()</code> plug-in function with the
+                preset defining the transformation (usually simply the same preset name, except
+                if you want to combine a graphic from one preset with a transformation from another).</li>
+            <li>Please note: Forgetting the <code>setupFoldingArrowIconTransformation</code> won't
+                seem to do any bad – as long as you use a browser supporting CSS transformations for SVG.
+                (The default transformation and transition for this preset are defined in the bundled
+                file <code>jquery-folding-arrow-icon.css</code>.) But if the page is opened in a 
+                Microsoft browser, which doesn't yet support CSS transformations, the inline transformations
+                defined by this plug-in function will become “alive”. And since the default transition
+                is a rotation by 90°, this won't have any visible effect on the plus icon!</li>
+            <li>If you can't or don't want to test your page in Internet Explorer or Edge, 
+            	you may test the inline transformation attribute in your browser's developer tools by
+            	selecting the SVG and disabling the CSS transformation rule for its <code>g</code> node!</li>
+            <li><pre><code class="language-javascript">$("#plus-preset > li").prependFoldingArrowIcon({
+    preset: "plus"
+}).setupFoldingArrowIconTransformation({
+    preset: "plus"
+});</code></pre></li>
+            <li><pre><code class="language-css">#plus-preset .plus line {
+    stroke: #555;
+    stroke-width: 3;
+}</code></pre></li>
         </ul>
     </li>
 </ul>
 
-<ul id="plus-manual" class="folding-arrows">
-    <li>
-        <a href="#!">Test list item</a>
-        <ul>
-            <li>Sub</li>
-        </ul>
-    </li>
-</ul>
+
 
 <ul id="plus-circle1" class="folding-arrows plus-circle">
     <li>

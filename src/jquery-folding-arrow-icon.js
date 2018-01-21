@@ -30,6 +30,15 @@
 	class PresetCopy {
 		constructor(presetName) {
 			this.preset = $.extend({}, $.fn.prependFoldingArrowIcon.PRESETS[presetName]);
+			//While $.extend creates a copy of the preset object, the copied object's
+			//graph property still references the same graph array. 
+			//In order for the append|prpendToGraph methods to work as intended and
+			//not to modify the original preset's graph, we'll now explicitly copy
+			//the graph array:
+//			this.preset.graph = this.preset.graph.slice();
+			if (Array.isArray(this.preset.graph)) {
+				this.preset.graph = this.preset.graph.slice();
+			}
 		}
 		
 		prependToGraph(elementName, attributes) {
