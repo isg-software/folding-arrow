@@ -54,18 +54,29 @@
                 preset: "plus"
             });
             
-            $("#plus-circle1 > li").prependFoldingArrowIcon({
+            $("#plus-minus-preset > li").prependFoldingArrowIcon({
+                preset: "plus-minus"
+            }).setupFoldingArrowIconTransformation({
+                preset: "plus-minus"
+            });
+            
+            $("#plus-circle > li").prependFoldingArrowIcon({
                 preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
                 .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"}),
                 viewboxRadius: 17,
                 viewboxMargin: 3
+            }).setupFoldingArrowIconTransformation({
+            	preset: "plus"
             });
             
-            $("#plus-circle2 > li").prependFoldingArrowIcon({
-                preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+            var myPlusMinusCirclePreset = $.fn.prependFoldingArrowIcon.copyOfPreset("plus-minus")
                 .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"})
                 .prop("viewboxRadius", 17)
-                .prop("viewboxMargin", 3)
+                .prop("viewboxMargin", 3);
+            $("#plus-minus-circle > li").prependFoldingArrowIcon({
+                preset: myPlusMinusCirclePreset
+            }).setupFoldingArrowIconTransformation({
+            	preset: myPlusMinusCirclePreset
             });
 
             
@@ -138,11 +149,11 @@
                 transformations: [{"line.v": "scale(1 0)"}]
             });
             $("h2.folding-plus-right.minus").prependFoldingArrowIcon({
-                preset: "plusminus",
+                preset: "plus-minus",
                 viewboxMargin: 3,
                 separator: ""
             }).setupFoldingArrowIconTransformation({
-                preset: "plusminus"
+                preset: "plus-minus"
             }).click(function(){
                 openOrCloseSection($(this));
             });
@@ -228,12 +239,12 @@
         }
         
         
-        #plus-preset .plus line {
+        #plus-preset .plus line, #plus-minus-preset .plus-minus line {
             stroke: #555;
             stroke-width: 3;
         }
         
-        ul.plus-circle .plus line, ul.plus-circle .plus circle {
+        ul.plus-circle .folding-arrow-icon line, ul.plus-circle .folding-arrow-icon circle {
             stroke: #555;
             stroke-width: 4;
             fill: none;
@@ -270,12 +281,21 @@
             add up.
         */
         
-        h2.folding-plus-right .folding-arrow-icon line {
+        h2.sec.folding-plus-right {
+        	color: #555;
+        }
+        h2.sec.folding-plus-right:hover {
+        	color: #33e;
+        }
+        h2.sec.folding-plus-right .folding-arrow-icon line {
             stroke: #555;
             stroke-width: 3;
             stroke-linecap: round;
         }
-        h2.folding-plus-right .folding-arrow-icon, 
+        h2.sec.folding-plus-right:hover .folding-arrow-icon line {
+        	stroke: #33e;
+        }
+        h2.sec.folding-plus-right .folding-arrow-icon, 
         #sec2 .folding-arrow-icon, 
         #sec2a .folding-arrow-icon, 
         #sec2b .folding-arrow-icon {
@@ -787,22 +807,100 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
     </li>
 </ul>
 
-
-
-<ul id="plus-circle1" class="folding-arrows plus-circle">
+<ul id="plus-minus-preset" class="folding-arrows">
     <li>
-        <a href="#!">Combine preset with circle</a>
+        <a href="#!">Plus-Minus-Preset</a>
         <ul>
-            <li>Sub</li>
+            <li>This example is mostly identical to the previous one, but this preset
+            	defines a different transformation: Instead of rotating the plus icon to
+            	form an X, it scales the vertical bar down (with a CSS transition) to
+            	zero height, so that only the horizontal bar remains, and thus the plus icon
+            	gets transformed into a minus icon.</li>
+            <li><pre><code class="language-javascript">$("#plus-preset > li").prependFoldingArrowIcon({
+    preset: "plus-minus"
+}).setupFoldingArrowIconTransformation({
+    preset: "plus-minus"
+});</code></pre></li>
+            <li><pre><code class="language-css">#plus-minus-preset .plus-minus line {
+    stroke: #555;
+    stroke-width: 3;
+}</code></pre></li>
         </ul>
     </li>
 </ul>
 
-<ul id="plus-circle2" class="folding-arrows plus-circle">
+<ul id="plus-circle" class="folding-arrows plus-circle">
     <li>
         <a href="#!">Combine preset with circle</a>
         <ul>
-            <li>Sub</li>
+        	<li>Further above, we already demonstrated how to create a graph with a circle around an arrow icon.
+        		However, that graph had been created from scratch. This example is to demonstrate how to
+        		extend the graph of an existing preset.</li>
+        	<li>The function <code>$.fn.prependFoldingArrowIcon.copyOfPreset()</code> (not a jQuery plug-in,
+        		but a static helper function published in the plug-ins namespace) takes the name of a preset
+        		and returns an object of a special PresetCopy class. This object can always be used as
+        		argument to the <code>preset</code> option instead of a preset name (string), but before that,
+        		you may apply modifications to that preset-copy using its methods.<br>
+        		The most important methods are <code>prependToGraph()</code> and <code>appendToGraph()</code>.
+        		Remember that the graph is an array of SVG element definitions, and these methods may
+        		define further SVG elements which are added to the graph array at its beginning resp. end.
+        		They take two arguments: first the element name (tag name), second an object of key-value-pairs
+        		defining the attributes to add to that tag.</li>
+        	<li>In this case we prepend a circle to the graph. The original preset graph has a radius of 10px,
+        		and for the circle we choose a radius of 17px.</li>
+        	<li>Now, as already explained in the previous example, the <code>viewboxRadius</code> also has to
+        		be enlarged (to 17), and in order to leave some room for the stroke of width 4, we have to
+        		define a <code>viewboxMargin</code> of at least 2. For some more tolerance, we choose 3.</li>
+        	<li>Note 1: In <em>this</em> example, we directly set these viewBox-options directly in the options object.
+        		It's always possible to combine the <code>preset</code> option with "hard-coded" other options,
+        		the latter then override the preset's options!</li>
+        	<li>Note 2: For the <code>setupFoldingArrowIconTransformations()</code> call we simply use
+        		the original preset, since our copy of the preset only overrides the preset's graph,
+        		the inherited transformation properties haven't changed and are also applicable on the
+        		changed graph (since the added circle does not have to be transformed).</li>
+            <li><pre><code class="language-javascript">$("#plus-circle > li").prependFoldingArrowIcon({
+	preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+			.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"}),
+	viewboxRadius: 17,
+	viewboxMargin: 3
+}).setupFoldingArrowIconTransformation({
+	preset: "plus"
+});</code></pre></li>
+			<li><pre><code class="language-css">ul.plus-circle .plus line, ul.plus-circle .plus circle {
+	stroke: #555;
+	stroke-width: 4;
+	fill: none;
+}</code></pre></li>
+        </ul>
+    </li>
+</ul>
+
+<ul id="plus-minus-circle" class="folding-arrows plus-circle">
+    <li>
+        <a href="#!">Combine preset with circle</a>
+        <ul>
+        	<li>This example differs from the previous one in two ways:
+        		<ol>
+        			<li>We copied another preset ("plus-minus" instead of "plus").</li>
+        			<li>The main difference is: We don't override the viewbox Properties locally in
+        				the plug-in call's options, but directly in the copied preset. That is more elegant,
+        				since it provides a consistent new preset with its viewbox perfectly fitting its graph.
+        				And this newly created preset may be saved to a variable in order to be re-used in
+        				several function calls. (Here, we demonstrate that by passing it to both
+        				plug-in calls.)
+        			</li>
+        		</ol>
+        	</li>
+            <li><pre><code class="language-javascript">var myPlusMinusCirclePreset = $.fn.prependFoldingArrowIcon.copyOfPreset("plus-minus")
+	.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"})
+	.prop("viewboxRadius", 17)
+	.prop("viewboxMargin", 3);
+$("#plus-minus-circle > li").prependFoldingArrowIcon({
+	preset: myPlusMinusCirclePreset
+}).setupFoldingArrowIconTransformation({
+	preset: myPlusMinusCirclePreset
+});</code></pre></li>
+			<li>For styling, we use the very same CSS as in the previous example.</li>
         </ul>
     </li>
 </ul>
@@ -837,6 +935,7 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
 <h2 class="sec folding-plus-right x" id="sec3">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
+    <p>TODO: Note the hover effect</p>
 </div>
 
 <h2 class="sec folding-plus-right x" id="sec4">This is a section header</h2>

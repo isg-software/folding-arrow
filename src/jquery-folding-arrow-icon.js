@@ -258,8 +258,8 @@
 			]
 		}
 	}
-	$.fn.prependFoldingArrowIcon.PRESETS["plusminus"] = copyOfPreset("plus")
-		.prop("svgClass", "folding-arrow-icon plusminus")
+	$.fn.prependFoldingArrowIcon.PRESETS["plus-minus"] = copyOfPreset("plus")
+		.prop("svgClass", "folding-arrow-icon plus-minus") //must differ from "plus" class in order to be able to assign different transformation & transition via CSS!
 		.prop("transformations", [{"line.v": "scale(1 0)"}])
 		.preset;
 

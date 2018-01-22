@@ -15,16 +15,16 @@ svg.folding-arrow-icon > g {
 .folding-arrow.showing > svg.folding-arrow-icon.plus > g {
   transform: rotate(45deg);
 }
-svg.folding-arrow-icon.plusminus > g {
+svg.folding-arrow-icon.plus-minus > g {
   transition: none;
 }
-svg.folding-arrow-icon.plusminus > g line.v {
+svg.folding-arrow-icon.plus-minus > g line.v {
   transition: transform 0.5s;
 }
-.folding-arrow.showing > svg.folding-arrow-icon.plusminus > g {
+.folding-arrow.showing > svg.folding-arrow-icon.plus-minus > g {
   transform: none;
 }
-.folding-arrow.showing > svg.folding-arrow-icon.plusminus > g line.v {
+.folding-arrow.showing > svg.folding-arrow-icon.plus-minus > g line.v {
   transform: scale(1, 0);
 }
 ul.folding-arrows {
