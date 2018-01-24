@@ -100,7 +100,9 @@
             $("#sec1a").appendFoldingArrowIcon({
                 preset: "arrow-up-down",
                 closePath: false
-            }).setupFoldingArrowIconTransformation()
+            }).setupFoldingArrowIconTransformation({
+                preset: "arrow-up-down"
+            })
             .click(function(){
                 openOrCloseSection($(this));
             });
