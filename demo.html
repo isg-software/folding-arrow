@@ -123,17 +123,17 @@
                 .prop("viewboxRadius", 10)
                 .prop("viewboxMargin", 0)
                 .prop("closePath", false);
-            $("#sec2a, #sec2b").prependFoldingArrowIcon({
+            $("#sec-al-right-circle1, #sec-al-right-circle2").prependFoldingArrowIcon({
                 preset: arrowUpDownInCircle,
                 separator: ""
             }).click(function(){
                 openOrCloseSection($(this));
             });
             
-            $("#sec2a").setupFoldingArrowIconTransformation({
+            $("#sec-al-right-circle1").setupFoldingArrowIconTransformation({
                 preset: arrowUpDownInCircle
             });
-            $("#sec2b").setupFoldingArrowIconTransformation({
+            $("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
                 transformations: [{"path": "scale(1 -1)"}]
             });
             
@@ -182,9 +182,9 @@
         function openOrCloseLi(li) {
             openOrClose(li);
             if (li.is(".showing"))
-                $("ul", li).show(500);
+                $("ul", li).slideDown(500);
             else
-                $("ul", li).hide(500);
+                $("ul", li).slideUp(500);
         }
         
         function openOrCloseSection(h) {
@@ -194,10 +194,10 @@
                     openOrCloseSection($(this));
                 });
                 openOrClose(h);
-                h.next().show(500);
+                h.next().slideDown(500);
             } else {
                 openOrClose(h);
-                h.next().hide(500);
+                h.next().slideUp(500);
             }
         }
     </script>
@@ -321,22 +321,22 @@
             transform: scale(1, 0);
         }
         
-        #sec2a .folding-arrow-icon circle, #sec2b .folding-arrow-icon circle {
+        #sec-al-right-circle1 .folding-arrow-icon circle, #sec-al-right-circle2 .folding-arrow-icon circle {
             stroke: none;
             fill: #007;
         }
-        #sec2a .folding-arrow-icon path, #sec2b .folding-arrow-icon path {
+        #sec-al-right-circle1 .folding-arrow-icon path, #sec-al-right-circle2 .folding-arrow-icon path {
             stroke: white;
         }
         
-        #sec2b .folding-arrow-icon > g {
+        #sec-al-right-circle2 .folding-arrow-icon > g {
             transition: none;
             transform: none;
         }
-        #sec2b .folding-arrow-icon path {
+        #sec-al-right-circle2 .folding-arrow-icon path {
             transition: transform 0.5s;
         }
-        #sec2b.showing .folding-arrow-icon path {
+        #sec-al-right-circle2.showing .folding-arrow-icon path {
             transform: scale(1, -1);
         }
         
@@ -375,10 +375,10 @@ define the actual SVG image. The plug-in however provides some default graphics 
 
 <p><em>Please note: This plug-in concentrates on drawing the SVG icon, which may even
 be animated with CSS transitions. The actual content-folding is not part of this plug-in.
-The following examples add some very simple folding with jQuery's <code>show()</code>
-and <code>hide()</code> methods with a delay argument.</em> These show() and hide()
-mechanism actually needed some tricky CSS tweaks to really run smoothly (only
-for the collapsable secions examples below), please refer to the source code of this page
+The following examples add some very simple folding with jQuery's <code>slideDown()</code>
+and <code>slideUp()</code> methods with a delay argument.</em> These slideDown() and slideUp()
+mechanism actually needed some tricky CSS tweaks to really run smoothly (only applied
+in the »Foldable Sections« examples below), please refer to the source code of this page
 if interested.</p>
 
 
@@ -493,9 +493,9 @@ as the following ones) in order to show and hide sub-lists:</p>
     function openOrCloseLi(li) {
         openOrClose(li);
         if (li.is(".showing"))
-            $("ul", li).show(500);
+            $("ul", li).slideDown(500);
         else
-            $("ul", li).hide(500);
+            $("ul", li).slideUp(500);
     }
 
     $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
@@ -943,10 +943,10 @@ function openOrCloseSection(h) {
             openOrCloseSection($(this));
         });
         openOrClose(h);
-        h.next().show(500);
+        h.next().slideDown500);
     } else {
         openOrClose(h);
-        h.next().hide(500);
+        h.next().slideUp(500);
     }
 }
 $(function(){
@@ -981,7 +981,7 @@ h2.folding-arrow + div {
     Note: the margins above (no top margin of the h2 itself and no top margin
     for the first child in the hideable content resp no bottom margin for
     the content's last child are chosen in order to enable a smooth folding animation
-    by jQuery's show() and hide() methods. Margins in these places would cause "jumps"
+    by jQuery's slideDown) and slideUp() methods. Margins in these places would cause "jumps"
     at the start and end of the animation, as the top margin of an element gets usually
     "merged" with the bottom margin of its next sibling, while during the animation they
     add up.
@@ -1063,14 +1063,82 @@ h2.folding-arrow + div {
 </div>
 
 
-<h2 class="sec al-right" id="sec2a">This is a section header</h2>
+<h2 class="sec al-right" id="sec-al-right-circle1">Combining chevron with circle</h2>
 <div>
-    <p>First paragraph of section</p>
+	<p>This example is a variation of the previous one, simply adding a circle to the 
+		"arrow-up-down" preset's icon.</p>
+    <p>In this case, the circle should be
+	    filled and should be <em>prepended</em> to the arrow icon, i.e. be placed behind
+	    the latter. Since the background circle is filled with a dark (blue) color,
+	    the foreground icon is formatted uses a white stroke.</p>
+	<p>For more explanations on the code, please refer to the previous list item examples!</p>
+	<pre><code class="language-javascript">var arrowUpDownInCircle = $.fn.prependFoldingArrowIcon.copyOfPreset("arrow-up-down")
+	.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "10"})
+	.prop("viewboxRadius", 10)
+	.prop("viewboxMargin", 0)
+	.prop("closePath", false);
+$("#sec-al-right-circle1").prependFoldingArrowIcon({
+	preset: arrowUpDownInCircle,
+	separator: ""
+}).click(function(){
+	openOrCloseSection($(this));
+}).setupFoldingArrowIconTransformation({
+	preset: arrowUpDownInCircle
+});</code></pre>
+	<pre><code class="language-css">#sec-al-right-circle1 .folding-arrow-icon circle {
+	stroke: none;
+	fill: #007;
+}
+#sec-al-right-circle1 .folding-arrow-icon path {
+	stroke: white;
+}</code></pre>
 </div>
 
-<h2 class="sec al-right" id="sec2b">This is a section header</h2>
+<h2 class="sec al-right" id="sec-al-right-circle2">Animating only part of the SVG</h2>
 <div>
-    <p>First paragraph of section</p>
+    <p>In the previous example, the whole graphic, i.e. the circle with the white chevron 
+		in it, gets flipped vertically. In the end result, only the arrow has changed its
+		direction, while the circle still looks the same (naturally). Yet, during the transition,
+		the whole circle gets shrunken and expanded again. This may feel a litte obtrusive, so
+		<em>this</em> example provides a more discreet transition.</p>
+	<p>It simply differs from the previous example only in the one aspect, that instead
+		of the whole icon (or, to be more precise, the group inside the SVG image which consists
+		of two shapes, the circle and the array) now only the arrow shape is to be flipped, while
+		the circle rests untouched.</p>
+	<p>The main Javascript code and CSS styles are exactly the same as in the example above 
+		(except, of course,	that a different section ID is selected).
+		Here, we'll only show the code defining the different transformation and transition:
+	<pre><code class="language-css">#sec-al-right-circle2 .folding-arrow-icon > g {
+	transition: none;
+	transform: none;
+}
+#sec-al-right-circle2 .folding-arrow-icon path {
+	transition: transform 0.5s;
+}
+#sec-al-right-circle2.showing .folding-arrow-icon path {
+	transform: scale(1, -1);
+}</code></pre>
+	<p>The first CSS rule overrides the default transition and tranformation for the group (<code>g</code>)
+		inherited from the included CSS file. The other two rules define a transition for the path node
+		and a transformation for the path node in case it is marked as <code>showing</code>.
+		Keep in mind, the image inside the generated SVG contains one group element <code>g</code>
+		with two childen: a <code>circle</code> and a <code>path</code> element, 
+		and we only want to transform the latter.</p>
+	<p>Since the end result looks the same as in the previous example, only the transitions (animations)
+		differ, and the IE-/Edge fallback defined by <code>setupFoldungArrowIconTransformation</code>
+		does not support transition, one might think at first glance, that nothing has to be changed
+		here, the setup method could still be called with the same preset as in the previous example.
+		<em>But that assumption would be wrong!</em> The reason for that is quite simply, that, if
+		the CSS rules would transform the arrow icon and the attribute rules would transform the whole
+		group, <em>both</em> transformations would be applied simultaniously, effectively cancelling
+		each other out (at least in browsers supporting CSS transformations). Attribute and CSS
+		transformations can only safely co-exist, if they define transformations for the very same
+		SVG elements, in which case (as already explained in »Foldable List Items«), the CSS transition
+		overrides the attribute transition.</p>
+	<p>So, we have to redefine the transformation attribute accordingly:</p>
+	<pre><code class="language-javascript">$("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
+	transformations: [{"path": "scale(1 -1)"}]
+});</code></pre>
 </div>
 
 <h2 class="sec folding-plus al-right x" id="sec3">This is a section header</h2>
