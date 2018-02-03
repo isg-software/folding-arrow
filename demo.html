@@ -66,7 +66,7 @@
                 viewboxRadius: 17,
                 viewboxMargin: 3
             }).setupFoldingArrowIconTransformation({
-            	preset: "plus"
+                preset: "plus"
             });
             
             var myPlusMinusCirclePreset = $.fn.prependFoldingArrowIcon.copyOfPreset("plus-minus")
@@ -76,7 +76,7 @@
             $("#plus-minus-circle > li").prependFoldingArrowIcon({
                 preset: myPlusMinusCirclePreset
             }).setupFoldingArrowIconTransformation({
-            	preset: myPlusMinusCirclePreset
+                preset: myPlusMinusCirclePreset
             });
 
             
@@ -90,14 +90,14 @@
                 titleHidden: "show content"
             })
             
-            $("#sec1").prependFoldingArrowIcon({
+            $("#sec-prefix").prependFoldingArrowIcon({
                 closePath: false
             }).setupFoldingArrowIconTransformation()
             .click(function(){
                 openOrCloseSection($(this));
             });
             
-            $("#sec1a").appendFoldingArrowIcon({
+            $("#sec-postfix").appendFoldingArrowIcon({
                 preset: "arrow-up-down",
                 closePath: false
             }).setupFoldingArrowIconTransformation({
@@ -107,7 +107,7 @@
                 openOrCloseSection($(this));
             });
             
-            $("#sec2").prependFoldingArrowIcon({
+            $("#sec-al-right").appendFoldingArrowIcon({
                 preset: "arrow-up-down",
                 closePath: false,
                 separator: ""
@@ -137,7 +137,7 @@
                 transformations: [{"path": "scale(1 -1)"}]
             });
             
-            $("h2.folding-plus-right.x").prependFoldingArrowIcon({
+            $("h2.folding-plus.x").prependFoldingArrowIcon({
                 preset: "plus",
                 viewboxMargin: 3,
                 separator: ""
@@ -150,7 +150,7 @@
             $("#sec4").setupFoldingArrowIconTransformation({
                 transformations: [{"line.v": "scale(1 0)"}]
             });
-            $("h2.folding-plus-right.minus").prependFoldingArrowIcon({
+            $("h2.folding-plus.minus").prependFoldingArrowIcon({
                 preset: "plus-minus",
                 viewboxMargin: 3,
                 separator: ""
@@ -188,11 +188,17 @@
         }
         
         function openOrCloseSection(h) {
-            openOrClose(h);
-            if (h.is(".showing"))
+            if (!h.is(".showing")) {
+                //collapse currently open section(s):
+                $("h2.sec.showing").each(function() {
+                    openOrCloseSection($(this));
+                });
+                openOrClose(h);
                 h.next().show(500);
-            else
+            } else {
+                openOrClose(h);
                 h.next().hide(500);
+            }
         }
     </script>
     
@@ -283,24 +289,21 @@
             add up.
         */
         
-        h2.sec.folding-plus-right {
-        	color: #555;
+        h2.sec.folding-plus {
+            color: #555;
         }
-        h2.sec.folding-plus-right:hover {
-        	color: #33e;
+        h2.sec.folding-plus:hover {
+            color: #33e;
         }
-        h2.sec.folding-plus-right .folding-arrow-icon line {
+        h2.sec.folding-plus .folding-arrow-icon line {
             stroke: #555;
             stroke-width: 3;
             stroke-linecap: round;
         }
-        h2.sec.folding-plus-right:hover .folding-arrow-icon line {
-        	stroke: #33e;
+        h2.sec.folding-plus:hover .folding-arrow-icon line {
+            stroke: #33e;
         }
-        h2.sec.folding-plus-right .folding-arrow-icon, 
-        #sec2 .folding-arrow-icon, 
-        #sec2a .folding-arrow-icon, 
-        #sec2b .folding-arrow-icon {
+        h2.sec.al-right .folding-arrow-icon {
             float: right;
             width: 1em;
             height: 1em;
@@ -794,8 +797,8 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
                 defined by this plug-in function will become “alive”. And since the default transition
                 is a rotation by 90°, this won't have any visible effect on the plus icon!</li>
             <li>If you can't or don't want to test your page in Internet Explorer or Edge, 
-            	you may test the inline transformation attribute in your browser's developer tools by
-            	selecting the SVG and disabling the CSS transformation rule for its <code>g</code> node!</li>
+                you may test the inline transformation attribute in your browser's developer tools by
+                selecting the SVG and disabling the CSS transformation rule for its <code>g</code> node!</li>
             <li><pre><code class="language-javascript">$("#plus-preset > li").prependFoldingArrowIcon({
     preset: "plus"
 }).setupFoldingArrowIconTransformation({
@@ -814,10 +817,10 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
         <a href="#!">Plus-Minus-Preset</a>
         <ul>
             <li>This example is mostly identical to the previous one, but this preset
-            	defines a different transformation: Instead of rotating the plus icon to
-            	form an X, it scales the vertical bar down (with a CSS transition) to
-            	zero height, so that only the horizontal bar remains, and thus the plus icon
-            	gets transformed into a minus icon.</li>
+                defines a different transformation: Instead of rotating the plus icon to
+                form an X, it scales the vertical bar down (with a CSS transition) to
+                zero height, so that only the horizontal bar remains, and thus the plus icon
+                gets transformed into a minus icon.</li>
             <li><pre><code class="language-javascript">$("#plus-preset > li").prependFoldingArrowIcon({
     preset: "plus-minus"
 }).setupFoldingArrowIconTransformation({
@@ -835,43 +838,43 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
     <li>
         <a href="#!">Combine preset with circle</a>
         <ul>
-        	<li>Further above, we already demonstrated how to create a graph with a circle around an arrow icon.
-        		However, that graph had been created from scratch. This example is to demonstrate how to
-        		extend the graph of an existing preset.</li>
-        	<li>The function <code>$.fn.prependFoldingArrowIcon.copyOfPreset()</code> (not a jQuery plug-in,
-        		but a static helper function published in the plug-ins namespace) takes the name of a preset
-        		and returns an object of a special PresetCopy class. This object can always be used as
-        		argument to the <code>preset</code> option instead of a preset name (string), but before that,
-        		you may apply modifications to that preset-copy using its methods.<br>
-        		The most important methods are <code>prependToGraph()</code> and <code>appendToGraph()</code>.
-        		Remember that the graph is an array of SVG element definitions, and these methods may
-        		define further SVG elements which are added to the graph array at its beginning resp. end.
-        		They take two arguments: first the element name (tag name), second an object of key-value-pairs
-        		defining the attributes to add to that tag.</li>
-        	<li>In this case we prepend a circle to the graph. The original preset graph has a radius of 10px,
-        		and for the circle we choose a radius of 17px.</li>
-        	<li>Now, as already explained in the previous example, the <code>viewboxRadius</code> also has to
-        		be enlarged (to 17), and in order to leave some room for the stroke of width 4, we have to
-        		define a <code>viewboxMargin</code> of at least 2. For some more tolerance, we choose 3.</li>
-        	<li>Note 1: In <em>this</em> example, we directly set these viewBox-options directly in the options object.
-        		It's always possible to combine the <code>preset</code> option with "hard-coded" other options,
-        		the latter then override the preset's options!</li>
-        	<li>Note 2: For the <code>setupFoldingArrowIconTransformations()</code> call we simply use
-        		the original preset, since our copy of the preset only overrides the preset's graph,
-        		the inherited transformation properties haven't changed and are also applicable on the
-        		changed graph (since the added circle does not have to be transformed).</li>
+            <li>Further above, we already demonstrated how to create a graph with a circle around an arrow icon.
+                However, that graph had been created from scratch. This example is to demonstrate how to
+                extend the graph of an existing preset.</li>
+            <li>The function <code>$.fn.prependFoldingArrowIcon.copyOfPreset()</code> (not a jQuery plug-in,
+                but a static helper function published in the plug-ins namespace) takes the name of a preset
+                and returns an object of a special PresetCopy class. This object can always be used as
+                argument to the <code>preset</code> option instead of a preset name (string), but before that,
+                you may apply modifications to that preset-copy using its methods.<br>
+                The most important methods are <code>prependToGraph()</code> and <code>appendToGraph()</code>.
+                Remember that the graph is an array of SVG element definitions, and these methods may
+                define further SVG elements which are added to the graph array at its beginning resp. end.
+                They take two arguments: first the element name (tag name), second an object of key-value-pairs
+                defining the attributes to add to that tag.</li>
+            <li>In this case we prepend a circle to the graph. The original preset graph has a radius of 10px,
+                and for the circle we choose a radius of 17px.</li>
+            <li>Now, as already explained in the previous example, the <code>viewboxRadius</code> also has to
+                be enlarged (to 17), and in order to leave some room for the stroke of width 4, we have to
+                define a <code>viewboxMargin</code> of at least 2. For some more tolerance, we choose 3.</li>
+            <li>Note 1: In <em>this</em> example, we directly set these viewBox-options directly in the options object.
+                It's always possible to combine the <code>preset</code> option with "hard-coded" other options,
+                the latter then override the preset's options!</li>
+            <li>Note 2: For the <code>setupFoldingArrowIconTransformations()</code> call we simply use
+                the original preset, since our copy of the preset only overrides the preset's graph,
+                the inherited transformation properties haven't changed and are also applicable on the
+                changed graph (since the added circle does not have to be transformed).</li>
             <li><pre><code class="language-javascript">$("#plus-circle > li").prependFoldingArrowIcon({
-	preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
-			.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"}),
-	viewboxRadius: 17,
-	viewboxMargin: 3
+    preset: $.fn.prependFoldingArrowIcon.copyOfPreset("plus")
+            .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"}),
+    viewboxRadius: 17,
+    viewboxMargin: 3
 }).setupFoldingArrowIconTransformation({
-	preset: "plus"
+    preset: "plus"
 });</code></pre></li>
-			<li><pre><code class="language-css">ul.plus-circle .plus line, ul.plus-circle .plus circle {
-	stroke: #555;
-	stroke-width: 4;
-	fill: none;
+            <li><pre><code class="language-css">ul.plus-circle .plus line, ul.plus-circle .plus circle {
+    stroke: #555;
+    stroke-width: 4;
+    fill: none;
 }</code></pre></li>
         </ul>
     </li>
@@ -881,71 +884,207 @@ same SVG element, the CSS transition is used and the attribute is ignored.</p>
     <li>
         <a href="#!">Combine preset with circle</a>
         <ul>
-        	<li>This example differs from the previous one in two ways:
-        		<ol>
-        			<li>We copied another preset ("plus-minus" instead of "plus").</li>
-        			<li>The main difference is: We don't override the viewbox Properties locally in
-        				the plug-in call's options, but directly in the copied preset. That is more elegant,
-        				since it provides a consistent new preset with its viewbox perfectly fitting its graph.
-        				And this newly created preset may be saved to a variable in order to be re-used in
-        				several function calls. (Here, we demonstrate that by passing it to both
-        				plug-in calls.)
-        			</li>
-        		</ol>
-        	</li>
+            <li>This example differs from the previous one in two ways:
+                <ol>
+                    <li>We copied another preset ("plus-minus" instead of "plus").</li>
+                    <li>The main difference is: We don't override the viewbox Properties locally in
+                        the plug-in call's options, but directly in the copied preset. That is more elegant,
+                        since it provides a consistent new preset with its viewbox perfectly fitting its graph.
+                        And this newly created preset may be saved to a variable in order to be re-used in
+                        several function calls. (Here, we demonstrate that by passing it to both
+                        plug-in calls.)
+                    </li>
+                </ol>
+            </li>
             <li><pre><code class="language-javascript">var myPlusMinusCirclePreset = $.fn.prependFoldingArrowIcon.copyOfPreset("plus-minus")
-	.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"})
-	.prop("viewboxRadius", 17)
-	.prop("viewboxMargin", 3);
+    .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "17"})
+    .prop("viewboxRadius", 17)
+    .prop("viewboxMargin", 3);
 $("#plus-minus-circle > li").prependFoldingArrowIcon({
-	preset: myPlusMinusCirclePreset
+    preset: myPlusMinusCirclePreset
 }).setupFoldingArrowIconTransformation({
-	preset: myPlusMinusCirclePreset
+    preset: myPlusMinusCirclePreset
 });</code></pre></li>
-			<li>For styling, we use the very same CSS as in the previous example.</li>
+            <li>For styling, we use the very same CSS as in the previous example.</li>
         </ul>
     </li>
 </ul>
 
-<h2 class="sec" id="sec1">This is a section header</h2>
+<h2>Foldable Sections</h2>
+
+<p>The plug-in isn't limited to creating list item bullets. To show just one alternative, 
+the following examples will all use a heading (<code>h2</code>) to show or collapse
+a document section by clicking the heading.</p>
+
+<p>The secions in these examples all have the following structure:</p>
+
+<pre><code class="language-html">&lt;h2 class="sec"&gt;This is a section header&lt;/h2&gt;
+&lt;div&gt;
+    &lt;p&gt;Section content. Note this is all wrapped in one single div in order to simplify
+    collapsing or re-showing this content block.&lt;/p&gt;
+    &lt;p&gt;See JavaScript function openOrCloseSection() below, which will simply hide or show
+    the first sibling after the heading, which is exactly this div.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<p>All of the section examples use some common JavaScript and CSS code. 
+    Note that the <code>openOrCloseSection()</code> function not only folds or unfolds
+    one section, but also any other currently open section will be folded prior to
+    unfolding a newly selected one. Of course this is only an example, but this behaviour
+    is often found on the web.</p>
+
+<pre><code class="language-javascript">function openOrClose(jqr) {
+    return jqr.toggleClass("showing").transformFoldingArrowIcon();
+}
+
+function openOrCloseSection(h) {
+    if (!h.is(".showing")) {
+        //collapse currently open section(s):
+        $("h2.sec.showing").each(function() {
+            openOrCloseSection($(this));
+        });
+        openOrClose(h);
+        h.next().show(500);
+    } else {
+        openOrClose(h);
+        h.next().hide(500);
+    }
+}
+$(function(){
+    $("h2.sec").each(function() {
+        //Initially collapse all sections.
+        //Do this dynamically by script in order to have all section opened and visible
+        //in case JavaScript should be disabled in the browser.
+        $(this).next().hide();
+    }).setupFoldingArrowIconTransformation({
+        //Global title common to all of the examples
+        titleHidden: "open section"
+    });
+})</code></pre>
+
+<pre><code class="language-css">h2.sec {
+    border: 1px solid silver;
+    background-color: #eee;
+    border-radius: 0.3em;
+    padding: 0.2em;
+    margin-top: 0;
+}
+h2.folding-arrow + div > :first-child {
+    margin-top: 0;
+}
+h2.folding-arrow + div > :last-child {
+    margin-bottom: 0;
+}
+h2.folding-arrow + div {
+    margin-bottom: 2em;
+}
+/*
+    Note: the margins above (no top margin of the h2 itself and no top margin
+    for the first child in the hideable content resp no bottom margin for
+    the content's last child are chosen in order to enable a smooth folding animation
+    by jQuery's show() and hide() methods. Margins in these places would cause "jumps"
+    at the start and end of the animation, as the top margin of an element gets usually
+    "merged" with the bottom margin of its next sibling, while during the animation they
+    add up.
+*/</code></pre>
+
+<h2 class="sec" id="sec-prefix">Prepended arrow icon</h2>
+<div>
+    <p>This is a very simple example and uses the same function to prepend an icon 
+        as did the previous list item demos:</p>
+    <pre><code class="language-javascript">$("#sec-prefix").prependFoldingArrowIcon({
+    closePath: false
+}).setupFoldingArrowIconTransformation()
+.click(function(){
+    openOrCloseSection($(this));
+});</code></pre>
+    <p>As with the list item examples, you still have to add CSS styles to define
+        the looks of the generated SVG. Here, we'll define some styles which will
+        not only be used for this example, but also for some more of the following demos:</p>
+    <pre><code class="language-css">h2.folding-arrow .folding-arrow-icon path {
+    stroke: navy;
+    stroke-width: 2;
+    fill: none;
+}</code></pre>
+</div>
+
+<h2 class="sec" id="sec-postfix">Appended arrow icon</h2>
+<div>
+    <p>A variation of the previous example, differing in the following aspects:</p>
+    <ol>
+        <li>Use of the plug-in function <code>appendFoldingArrow()</code> instead of
+            <code>prependFoldingArrow()</code>, which, as its name suggests, inserts the
+            SVG icon at the end of the heading element instead of at its beginning.</li>
+        <li>Use of the preset <code>arrow-up-down</code>, which shows a down-pointing triangle
+            for collapsed and an up-pointing triangle for unfolded sections and doesn't use
+            a rotation transition, but a vertical mirroring transition to switch between them.
+            (Of course you could override that by defining a 180° rotation, too.)</li>
+    </ol>
+    <pre><code class="language-javascript">$("#sec-postfix").appendFoldingArrowIcon({
+    preset: "arrow-up-down",
+    closePath: false
+}).setupFoldingArrowIconTransformation({
+    preset: "arrow-up-down"
+})
+.click(function(){
+    openOrCloseSection($(this));
+});</code></pre>
+    <p>No further CSS code needed: This example re-uses the CSS shown in the previous example
+        for defining the looks of the arrow icon itself and the included 
+        <code>jquery-folding-arrow-icon.css</code> file's default rules for the transition
+        defined by the preset.</p>
+</div>
+
+<h2 class="sec al-right" id="sec-al-right">Right-aligned arrow icon</h2>
+<div>
+    <p>Again, a variation of the previous example, mainly differing in the alignment
+    of the icon via special CSS code. The following CSS is used for this and all other
+    following section examples:</p>
+    <pre><code class="language-css">h2.sec.al-right .folding-arrow-icon {
+    float: right;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.1em;
+}</code></pre>
+
+    <p>The JavaScript code is mainly the same, only one variation has been made:
+        Since the Icon is independently aligned, the <code>separator</code> property
+        gets redefined in order not to append an unnecessary space character to the
+        heading text (even though that would not actually be visible):</p>
+    <pre><code class="language-javascript">$("#sec-al-right").appendFoldingArrowIcon({
+    preset: "arrow-up-down",
+    closePath: false,
+    separator: ""
+}).setupFoldingArrowIconTransformation({
+    preset: "arrow-up-down"
+})
+.click(function(){
+    openOrCloseSection($(this));
+});</code></pre>
+</div>
+
+
+<h2 class="sec al-right" id="sec2a">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 class="sec" id="sec1a">This is a section header</h2>
+<h2 class="sec al-right" id="sec2b">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 class="sec" id="sec2">This is a section header 
-</h2>
-<div>
-    <p>First paragraph of section</p>
-</div>
-
-
-<h2 class="sec" id="sec2a">This is a section header</h2>
-<div>
-    <p>First paragraph of section</p>
-</div>
-
-<h2 class="sec" id="sec2b">This is a section header</h2>
-<div>
-    <p>First paragraph of section</p>
-</div>
-
-<h2 class="sec folding-plus-right x" id="sec3">This is a section header</h2>
+<h2 class="sec folding-plus al-right x" id="sec3">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
     <p>TODO: Note the hover effect</p>
 </div>
 
-<h2 class="sec folding-plus-right x" id="sec4">This is a section header</h2>
+<h2 class="sec folding-plus al-right x" id="sec4">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
 
-<h2 class="sec folding-plus-right minus" id="sec4b">This is a section header</h2>
+<h2 class="sec folding-plus al-right minus" id="sec4b">This is a section header</h2>
 <div>
     <p>First paragraph of section</p>
 </div>
