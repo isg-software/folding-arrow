@@ -147,7 +147,7 @@
             .click(function(){
                 openOrCloseSection($(this));
             });
-            $("#sec4").setupFoldingArrowIconTransformation({
+            $("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
                 transformations: [{"line.v": "scale(1 0)"}]
             });
             $("h2.folding-plus.minus").prependFoldingArrowIcon({
@@ -172,7 +172,9 @@
                 preset: "burger"
             }).click(function() {
                 openOrClose($("#burger"));
+                $("#burger-content").slideToggle();
             });
+            $("#burger-content").hide();
         });
         
         function openOrClose(jqr) {
@@ -289,6 +291,25 @@
             add up.
         */
         
+        #sec-al-right-circle1 .folding-arrow-icon circle, #sec-al-right-circle2 .folding-arrow-icon circle {
+            stroke: none;
+            fill: #007;
+        }
+        #sec-al-right-circle1 .folding-arrow-icon path, #sec-al-right-circle2 .folding-arrow-icon path {
+            stroke: white;
+        }
+        
+        #sec-al-right-circle2 .folding-arrow-icon > g {
+            transition: none;
+            transform: none;
+        }
+        #sec-al-right-circle2 .folding-arrow-icon path {
+            transition: transform 0.5s;
+        }
+        #sec-al-right-circle2.showing .folding-arrow-icon path {
+            transform: scale(1, -1);
+        }
+        
         h2.sec.folding-plus {
             color: #555;
         }
@@ -310,68 +331,37 @@
             margin-top: 0.1em;
         }
         
-        #sec4 .folding-arrow-icon.plus > g {
+        h2.folding-plus.x.altered .folding-arrow-icon.plus > g {
             transform: none;
             transition: none;
         }
-        #sec4 .folding-arrow-icon.plus line.v {
+        h2.folding-plus.x.altered .folding-arrow-icon.plus line.v {
             transition: transform 0.7s;
         }
-        #sec4.showing .folding-arrow-icon.plus line.v {
+        h2.folding-plus.x.altered.showing .folding-arrow-icon.plus line.v {
             transform: scale(1, 0);
         }
         
-        #sec-al-right-circle1 .folding-arrow-icon circle, #sec-al-right-circle2 .folding-arrow-icon circle {
-            stroke: none;
-            fill: #007;
-        }
-        #sec-al-right-circle1 .folding-arrow-icon path, #sec-al-right-circle2 .folding-arrow-icon path {
-            stroke: white;
-        }
         
-        #sec-al-right-circle2 .folding-arrow-icon > g {
-            transition: none;
-            transform: none;
-        }
-        #sec-al-right-circle2 .folding-arrow-icon path {
-            transition: transform 0.5s;
-        }
-        #sec-al-right-circle2.showing .folding-arrow-icon path {
-            transform: scale(1, -1);
-        }
         
 
         #burger .burger-icon {
             width: 40px;
             height: 40px;
+            vertical-align: middle;
         } 
+        
+        #burger-menu {
+    		border-top: 1px solid silver;
+    		border-bottom: 1px solid silver;
+    		border-radius: 0.2em;
+        	padding: 1em;
+        }
     </style>
 
 </head>
 <body>
 <h1>Demo of prependFoldingArrowIcon jQuery plug-in</h1>
-
-<h2>Introduction</h2>
-<p>When you look at the following examples, you'll most certainly recognize the triangle icons 
-used to indicate whether a (sub)section is visible or collapsed/folded. One of the most common
-usages of such icons is in hierarchical lists to show list items with sub-lists and the state
-of the latter's visibility. For a collapsed sublist, the icon is usually an arrow to the right,
-if it's visible, the arrow points down.</p>
-<p>Since the actual look of the icon is not the major content of the HTML document, but a 
-simply a presentation style, a common way to achieve this is to simply add a class to the 
-foldable list item which represents the logical state (open/visible or closed/collaped/folded).
-The icon being presentation could simply be added by CSS, e.g. with a rule like
-<code>li.open::before(content: url(arrowDown.svg))</code>.</p>
-<p>This CSS-only way with external image files has, however, some disadvantages.
-Especially the sizing /scaling of the image might be trick, and when opening or closing
-the sub list, the image simply gets replaced, so the arrows change without animation.
-These were the main reasons for the development of this plug-in:</p>
-<p>This plug-in dynamically inserts an inline-SVG image into the HTML. Other than externally
-loaded and embedded SVG documents, inline-SVG may be styled by CSS rules of the HTML document.
-So you may (and have to) use CSS to size the icon and to define its properties like stroke,
-line width, fill color etc.</p>
-<p>The plug-in itself doesn't stop there, but is configurable, so you can even (in JavaScript)
-define the actual SVG image. The plug-in however provides some default graphics as presets.</p>
 
 <p><em>Please note: This plug-in concentrates on drawing the SVG icon, which may even
 be animated with CSS transitions. The actual content-folding is not part of this plug-in.
@@ -1141,24 +1131,146 @@ $("#sec-al-right-circle1").prependFoldingArrowIcon({
 });</code></pre>
 </div>
 
-<h2 class="sec folding-plus al-right x" id="sec3">This is a section header</h2>
+<h2 class="sec folding-plus al-right x">Using the "plus" preset and a hover effect</h2>
 <div>
-    <p>First paragraph of section</p>
-    <p>TODO: Note the hover effect</p>
+    <p>This example picks up the plus preset again, which has already been demonstrated in the
+    	list items section, but was actually mainly created to be used this way in a section header.</p>
+    <p>Here, we don't address a single header by its ID, but we use a class selection for all
+    	headers of classes <code>folding-plus</code> and class <code>x</code>:</p>
+    <pre><code class="language-javascript">$("h2.folding-plus.x").prependFoldingArrowIcon({
+	preset: "plus",
+	viewboxMargin: 3,
+	separator: ""
+}).setupFoldingArrowIconTransformation({
+	preset: "plus"
+})
+.click(function(){
+	openOrCloseSection($(this));
+});</code></pre>
+	<p>By constraining the selector to the additional class <code>x</code> this script setup is specific
+		to this demo with the plus, which should be rotated by 45° to form an X when the section
+		is unfolded.</p>
+	<p>The following CSS, however, is not constrained to the <code>x</code> class, but is
+		shared with the following demos using a plus, which gets transformed into a minus.</p>
+	<pre><code class="language-css">h2.sec.folding-plus {
+	color: #555;
+}
+h2.sec.folding-plus:hover {
+	color: #33e;
+}
+h2.sec.folding-plus .folding-arrow-icon line {
+	stroke: #555;
+	stroke-width: 3;
+	stroke-linecap: round;
+}
+h2.sec.folding-plus:hover .folding-arrow-icon line {
+	stroke: #33e;
+}</code></pre>
+    	
+    <p>To demonstrate a further advantage of inline SVG images over external files loaded
+    	as <code>img</code>, this demo not only defines a static style for the plus icon,
+    	but it adds a hover effect to the whole header, highlighting the text as well
+    	as the SVG icon when the mouse cursor hovers over the heading.</p>
+
 </div>
 
-<h2 class="sec folding-plus al-right x" id="sec4">This is a section header</h2>
+<h2 class="sec folding-plus al-right minus">"plus-minus" preset</h2>
 <div>
-    <p>First paragraph of section</p>
+    <p>This example only differs from the previous one by loading the "plus-minus" preset
+    	which defines a different transformation (plus to minus instead of plus to X):</p>
+    <pre><code class="javascript">$("h2.folding-plus.minus").prependFoldingArrowIcon({
+	preset: "plus-minus",
+	viewboxMargin: 3,
+	separator: ""
+}).setupFoldingArrowIconTransformation({
+	preset: "plus-minus"
+}).click(function(){
+	openOrCloseSection($(this));
+});</code></pre>
+	<p>The CSS code is shared with the previous demo.</code>
 </div>
 
-<h2 class="sec folding-plus al-right minus" id="sec4b">This is a section header</h2>
+<h2 class="sec folding-plus al-right x altered" id="sec-override-x">Manually overriding tranformation</h2>
 <div>
-    <p>First paragraph of section</p>
+    <p>This demo is not intended to be used as blueprint for achieving the plus-to-minus 
+    	transformation, since that's, what the previously demonstrated "plus-minus" preset is for.
+    	It's simply a demo of how you might use plug-in options in order to locally modify
+    	the transformation defined by a preset.</p>
+    <p>So let's assume that the "plus-minus" preset were not available and you wanted to 
+    	simply use the "plus" preset and override its transformation.</p>
+    <p>In this example wie use the same classes as in the first "plus" demo
+    	and add a further class <code>altered</code> intended to mark a heading where this
+    	transformation override should be added to:
+    	<code>&lt;h2 class="sec folding-plus al-right x altered" &gt;</code>.</p>
+    <p>The "plus"-demo's javascript will now be executed first and thus
+    	will apply the "plus" preset to this heading, too.<br>
+    	But then we execute a second javascript snippet, which will subsequently
+    	alter the transformation setting for this example, defining a different
+    	fallback transition attribute for browsers not supporting CSS transformations:</p>
+    	 
+    <pre><code class="javascript">$("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
+		transformations: [{"line.v": "scale(1 0)"}]
+	});</code></pre>
+	
+	<p>For browsers <em>with</em> CSS transformations support, the CSS has to be overridden,
+		and here that's not just the transformation itself but also the according
+		transition:</p>
+		
+	<pre><code class="language-css">h2.folding-plus.x.altered .folding-arrow-icon.plus > g {
+	transform: none;
+	transition: none;
+}
+h2.folding-plus.x.altered .folding-arrow-icon.plus line.v {
+	transition: transform 0.7s;
+}
+h2.folding-plus.x.altered.showing .folding-arrow-icon.plus line.v {
+	transform: scale(1, 0);
+}</code></pre>
+
+	<p>Note that in this case (CSS override), we not only add a new transformation
+		to the vertical line of the plus icon (<code>line</code> element of class <code>v</code>
+		as defined by the <code>"plus"</code> preset), but we also have to reset the
+		transformation of the <code>g</code> element, which is usually defined for this preset.
+		In the JavaScript version above that was not necessary, since overwriting the
+		<code>transformations</code> option completely replaces the inherited transformation.</p>
 </div>
 
-<div id="burger"></div>
+<h2>Burger Menu Icon</h2>
 
+<p>Though this jQuery plug-in is really mainly made for use cases as demoed above, it
+	can be used for slightly different purposes, too, in which a single icon is needed which
+	can be flipped between two states with a simple transition, combinable with a CSS transition.</p>
+	
+<p>A burger icon for opening and closing some menu is one such use case, and for this rather
+	common type if icon, a further preset is included and shall be demoed here. (If it weren't,
+	of course you could use this plug-in's <code>graph</code> option to create your own icon,
+	as already has been demonstrated above.</p>
+	
+
+
+<div id="burger-menu">
+	<span id="burger"></span>
+	<span class="display: inline-block">Click this burger! (In this demo that will not open a menu,
+	but display the example code.)</span>
+	<div id="burger-content">
+		<pre><code class="language-javascript">$("#burger").prependFoldingArrowIcon({
+	preset: "burger"
+}).setupFoldingArrowIconTransformation({
+	preset: "burger"
+}).click(function() {
+	openOrClose($("#burger"));
+});</code></pre>
+		<pre><code class="language-css">#burger .burger-icon {
+	width: 40px;
+	height: 40px;
+	vertical-align: middle;
+}</code></pre>
+		<p>Default CSS styles for elements of the class <code>burger-icon</code>,
+			especially color and line width as well as the transformation and transition
+			are loaded from the included CSS file <code>jquery-folding-arrow-icon.css</code>.</p>
+		
+	</div>
+</div>
 
 </body>
 </html>

@@ -7,9 +7,35 @@
 
 <h1 id="folding-arrow">folding-arrow</h1>
 
-<p>jQuery plug-in for inserting arrow icons for foldable list items, sections etc. as inline SVG with CSS support.</p>
+<p>jQuery plug-in for inserting arrow icons for foldable list items, sections, burger menu icons etc. as inline SVG with CSS support.</p>
 
-<p><strong>Not released yet,</strong> documentation still largely missing. The demo page already works, but does not explain much yet.</p>
+<h2 id="motivation">Motivation</h2>
+
+<p>Have a look at the demo page, and you&#8217;ll most certainly recognize the demonstrated icons, like the triangle icons used to indicate whether a (sub)section is visible or collapsed/folded. One of the most common usages of such icons is in hierarchical lists to show list items with sub-lists and the state of the latter&#8217;s visibility. For a collapsed sublist, the icon is usually an arrow to the right, if it&#8217;s visible, the arrow points down.</p>
+
+<p>Since the actual look of the icon is not the major content of the HTML document, but a simply a presentation style, a common way to achieve this is to simply add a class to the foldable list item which represents the logical state (open/visible or closed/collaped/folded). The icon itself (being presentation) could simply be added by CSS, e.g. with rules like this:</p>
+
+<pre><code class="css">li::before{ content: url(arrowRight.svg) }
+li.open::before{ content: url(arrowDown.svg) }
+</code></pre>
+
+<p>Now the JavaScript which shows or hides the list item&#8217;s content simply has to add or remove the <code>open</code> class to resp. from the <code>li</code> node.</p>
+
+<p>This CSS-only way with external image files has, however, some disadvantages. Especially the sizing / scaling of the image might be tricky (e.g. <code>content</code> can&#8217;t be sized by CSS but has have a fixed size and can&#8217;t depend dynamically on the font size). And when opening or closing the sub list, the image simply gets replaced, so the arrows flip without animation. These were the main reasons for the development of this plug-in:</p>
+
+<p>This plug-in dynamically inserts an inline-SVG image into the HTML. Other than externally loaded and embedded SVG documents, inline-SVG may be styled by CSS rules of the HTML document.</p>
+
+<ul>
+<li>So you may (and have to) use CSS to size the icon and to define its properties like stroke, line width, fill color etc.</li>
+<li>You may style the image and the text (list item, section heading etc.) accordingly, even dynamic styles like a hover effect to both of them (see demos).</li>
+<li>And of course, CSS transitions allow for a smooth, animated state change like a rotating triangle, a flipping arrow sign or a plus being smoothly transformed into a minus (see demos).</li>
+</ul>
+
+<p>The plug-in itself doesn&#8217;t stop there, but is configurable, so you can even (in JavaScript) define the actual SVG image. Some typical images are provided as presets (including a transition). You can simply use these presets, modify them or create some custom images from scratch.</p>
+
+<p><strong>Please note:</strong> <em>This plug-in concentrates on drawing the SVG icon (which may be animated with CSS transitions). The actual content-folding is not part of this plug-in.</em> The demo page uses simple calls to jQuery&#8217;s built-in <code>slideDown()</code> and <code>slideUp()</code> functions, but the demo code still has to do two things on each click event: fold or unfold the content <em>and</em> flip the CSS state class of the list item or heading in order to change the icon. I&#8217;m considering publishing another jQuery plug-in with the focus on showing and hiding sections and automatically flipping a state class (like <code>open</code> in the example above) of a corresponding &#8220;header&#8221; element, to make that job even easier. Both plug-ins may then be combined for very simple (un-)folding of sections or list items.</p>
+
+<p><strong>Not released yet!</strong> The demo page is pretty much complete, but the reference documentation is still missing.</p>
 
 </body>
 </html>
