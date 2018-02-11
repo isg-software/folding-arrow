@@ -256,6 +256,14 @@
 				{"line.midline": "rotate(90)"},
 				{"g": "rotate(45)"}
 			]
+		},
+		"dash": {
+			graph: [{element: "line", attributes: {"x1": "-3", "x2": "5", "y1": "0", "y2": "0"}}],
+			svgClass: "folding-arrow-icon static dash"
+		},
+		"disc": {
+			graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r": "3"}}],
+			svgClass: "folding-arrow-icon static disc"
 		}
 	}
 	$.fn.prependFoldingArrowIcon.PRESETS["plus-minus"] = copyOfPreset("plus")

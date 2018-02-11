@@ -79,8 +79,13 @@
                 preset: myPlusMinusCirclePreset
             });
 
+
+            $("#bullets li.arrow.default").prependFoldingArrowIcon().setupFoldingArrowIconTransformation();
+            $("#bullets li.arrow.chevron").prependFoldingArrowIcon({closePath: false}).setupFoldingArrowIconTransformation();
+            $("#bullets li.dash").prependFoldingArrowIcon({preset: "dash"});
+            $("#bullets li.disc").prependFoldingArrowIcon({preset: "disc"});
             
-            $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
+            $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon:not(.static)").click(function(){
                 openOrCloseLi($(this).parent());
             });
             $("ul.folding-arrows > li:not(.showing) > ul").hide();
@@ -258,6 +263,24 @@
             stroke: #555;
             stroke-width: 4;
             fill: none;
+        }
+        
+        
+        #bullets .default svg path,
+        #bullets .default svg circle {
+        	stroke: none;
+        	fill: silver;
+        }
+        #bullets .default svg.dash line {
+        	stroke: silver;
+        	stroke-width: 2px;
+        }
+        #bullets .chevron svg path, 
+        #bullets .chevron svg line,
+        #bullets .chevron svg circle {
+        	stroke: navy;
+        	stroke.width: 1px;
+        	fill: none;
         }
         
         h2.folding-arrow .folding-arrow-icon path {
@@ -441,7 +464,9 @@ to add some CSS code to define the size and color theme:</p>
 which defines a default size for the images and the transition for rotating the arrow when
 the CSS class of the list item changes. Specifically for icons in unordered lists,
 it also contains rules which align list items without bullets and with this SVG image
-(inline inside the li's content) neatly with other normally bulleted list items.</p>
+(inline inside the li's content) neatly with other normally bulleted list items
+(see first sub list with default list bullets and compare its alignment to the second 
+sub list equipped with arrow icons).</p>
 
 <p>But including that CSS file still isn't enough, since it does <em>not</em> define
 the actual look (colors and line with) of the graphic. That, you' still have to define
@@ -488,7 +513,7 @@ as the following ones) in order to show and hide sub-lists:</p>
             $("ul", li).slideUp(500);
     }
 
-    $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon").click(function(){
+    $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon:not(.static)").click(function(){
         openOrCloseLi($(this).parent());
     });
     $("ul.folding-arrows > li:not(.showing) > ul").hide();
@@ -499,6 +524,12 @@ as the following ones) in order to show and hide sub-lists:</p>
 <code>transformFoldingArrowIcon()</code>. As long as your page is viewed with a browser
 that supports transformations via CSS, this plug-in is not needed, since the loaded
 default CSS already defines the rotation transformation along with a CSS transition.</p>
+
+<p>The click handler is only applied to those SVGs of class <code>folding-arrow-icon</code>
+which do not also have the class <code>static</code>. The latter is used by default to
+denote icons for static, not foldable list items. The shape of these icons might
+be a dash or disc (see examples for dash or disc presets further below) or some
+custom-designe other icons like a diamond, square etc.</p>
 
 <p>Unfortunately, the Microsoft browsers (Edge and Internet Explorer) do not support 
 CSS transformations for inline SVG, they require the transformations defined in
@@ -898,6 +929,89 @@ $("#plus-minus-circle > li").prependFoldingArrowIcon({
             <li>For styling, we use the very same CSS as in the previous example.</li>
         </ul>
     </li>
+</ul>
+
+<ul id="bullets" class="folding-arrows">
+	<li class="arrow default">
+		<a href="#!">Preset <code>dash</code> and non-folding list items</a>
+		<ul>
+			<li>The initial example at the beginning of this demo page demonstrated the
+				combination of arrow-icons with default CSS list bullets.
+				Yet—if you have lists of which only some list items are foldable
+				and others are static—you might want to use custom CSS images for
+				static list items, too. These can be styled via CSS to perfectly 
+				match the folding arrow icon style and provide a more homogeneous look
+				of the two kinds of bullets.</li>
+			<li>Two presets are pre-defined: a dash and a disc bullet. This example
+				shows the dash preset (see the following list item after this unfolded group).</li>
+			<li>Please note that the dash preset defines a dash not actually centered in the whole
+				of the square SVG area, but instead perfectly aligned with the default
+				triangle arrow icon, its left and aligned with the left edge of the right-pointing
+				triangle, and its right end aligned with the right vertex of the right-pointing
+				triangle. If, however, the triangle points downwards, the triangle is
+				no more aligned with the left end of the dash. (Of course, you may always
+				create your own dash icon via the <code>graph</code> option.)</li>
+				
+			<li>This very first dash example demonstrates how to create a dash visually
+				matching a silver and filled triangle:</li>
+			<li><pre><code class="language-javascript">$("#bullets li.arrow.default").prependFoldingArrowIcon().setupFoldingArrowIconTransformation();
+$("#bullets li.dash").prependFoldingArrowIcon({preset: "dash"});</code></pre>
+				(The first line prepends the default arrow icon and its default fallback 
+				transformation as demonstrated above already. The second line applies
+				the <code>dash</code> preset to the next list item. Since this is a static
+				list item, no transformation is defined.)
+			</li>
+			<li><pre><code class="language-css"> #bullets .default svg path,
+#bullets .default svg circle {
+	stroke: none;
+	fill: silver;
+}
+#bullets .default svg.dash line {
+	stroke: silver;
+	stroke-width: 2px;
+}</code></pre>
+        		(The first rule defines the look of the arrow icon and the disc bullet in an example further down,
+        		the second rule defines the look of the dash icon if the next list item.)</li>
+        	<li>The <code>dash</code> preset adds the classes <code>static</code> and <code>dash</code>
+        		to the SVGs class attribute. The latter can be used for styling (even if this has not been 
+        		done in this example, since we used the class of the list item itself) and the first one
+        		is meant to denote a general un-foldable list item. This has
+        		been used in the code presented in the introduction to this demo page which applies
+        		a click handler to all folding-arrow-icons <em>except</em> those of the
+        		<code>static</code> class (see above)</li>
+		</ul>
+	</li>
+	<li class="dash default">
+		Some static list item with dash icon. Unfold preceding item in order to see 
+		code and explanations.
+	</li>
+	<li class="arrow chevron">
+		<a href="#!">Preset "dash" and non-folding list items</a>
+		<ul>
+			<li>Text</li>
+		</ul>
+	</li>
+	<li class="dash chevron">
+		Text
+	</li>
+	<li class="arrow default">
+		<a href="#!">Preset "bullet" and non-folding list items</a>
+		<ul>
+			<li>Text</li>
+		</ul>
+	</li>
+	<li class="disc default">
+		Text
+	</li>
+	<li class="arrow chevron">
+		<a href="#!">Preset "dash" and non-folding list items</a>
+		<ul>
+			<li>Text</li>
+		</ul>
+	</li>
+	<li class="disc chevron">
+		Text
+	</li>
 </ul>
 
 <h2>Foldable Sections</h2>
