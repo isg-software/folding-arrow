@@ -66,10 +66,12 @@ What do you have to do at least in the simplest case?
 	    fill: silver;
 	}
 	```
-6. That's pretty much it, but something's still missing: Now you have a folding-arrow icon able to indicate whether the contents of the list item are visible or not. But you still have to add JavaScript handlers to capture events (like a click on the icon or on a link in the list item) which should actually toggle the state (fold or unfold content). This event handler has to do two things:
+6. That's pretty much it, but something's still missing: Now you have a folding-arrow icon able to indicate whether the contents of the list item are visible or not. But you still have to add JavaScript handlers to capture events (like a click on the icon or on a link in the list item) which should actually toggle the state (fold or unfold content). This event handler has to do three things:
 	1. Actually show or hide the content, and
 	2. Add or remove the class `showing` to resp. from the `<li>` item in order to flip the state of the indicator.
-	(Als already said in the introduction, I'm considering pulbishing a further jQuery plug-in which will simplify that bit.)
+	3. After adding/removing the `showing` class to/from the `<li>` item, the handler should also call another jQuery plug-in function provided by this library: `$(…).transformFoldingArrowIcon()`.    
+		This is not actually mandatory, but is needed for compatibility with Microsoft's browsers (Internet Explorer as well as Edge): Both don't support SVG transitions defined via CSS, the only understand transition attributes inside the SVG's DOM itself, and this plug-in function adds or removes a transition (by default a rotation by 90°) dependent (by default) on the presence or absence of the `showing` class. It also supports adding a title to the image (e.g. showing as a pop-up when the mouse hovers over it) depending on the `showing` state, but by default, no title is added.
+	(Als already said in the introduction, I'm considering pulbishing a further jQuery plug-in which will simplify this bit.)
 
 See the demo page for working examples. You may create a copy of the demo page as a playground for your own experiments.
 
