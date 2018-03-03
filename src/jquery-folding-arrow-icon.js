@@ -27,6 +27,13 @@
 (function($){
 	"use strict";
 	
+	/**
+	 * The function $.fn.appendFoldingArrowIcon.copyOfPreset 
+	 * (alias $.fn.appreendFoldingArrowIcon.copyOfPreset) returns an instance of this class.
+	 * Use the methods of this class to modify the copied preset.
+	 * Then you may directly use the modified instance as argument for the 'preset' option of
+	 * the included jQuery plug-in functions (instead of a preset name string literal).
+	 */
 	class PresetCopy {
 		constructor(presetName) {
 			this.preset = $.extend({}, $.fn.prependFoldingArrowIcon.PRESETS[presetName]);
@@ -41,16 +48,36 @@
 			}
 		}
 		
+		/**
+		 * Prepends a new SVG node definition to the preset's graph array.
+		 * Arguments:
+		 * elementName (string): Name of the SVG element to be created
+		 * attributes (object): Object (set of key-value-pairs) defining the attributes
+		 * for the inserted element: Each key defines an attribute name and its
+		 * value is to be a string defining the attribute value.
+		 * Return value: this (enables chained method calls).
+		 */
 		prependToGraph(elementName, attributes) {
 			this.preset.graph.unshift({element: elementName, attributes: attributes});
 			return this;
 		}
 		
+		/**
+		 * Just like prependToGraph, only is the new node definition appended
+		 * to the preset's graph array.
+		 */
 		appendToGraph(elementName, attributes) {
 			this.preset.graph.push({element: elementName, attributes: attributes});
 			return this;
 		}
 		
+		/**
+		 * Sets or gets a property of the preset.
+		 * prop(propertyName) returns the current value of the property (if defined).
+		 * prop(propertyName, propertyValue) sets the property to a new value and
+		 * simply returns this (the PresetCopy instance) in order to allow chained
+		 * method calls.
+		 */
 		prop(propertyName, propertyValue) {
 			if (typeof propertyValue === "undefined") {
 				return this.preset[propertyName];
@@ -130,6 +157,17 @@
 		}
 	}
 	
+	/**
+	 * jQuery plug-in function which inserts a new SVG icon into every node of the
+	 * jQuery result-set to which it is applied.
+	 * The icon gets prepended to the exiting node's content, followed by a separator string
+	 * (defaulting to an ensp, i.e a space of exactly 0.5em width).
+	 * If called without argument, the default options are applied. 
+	 * To use custom options, pass one argument of type object which defines exactly
+	 * those options you want to override. Any option left undefined in your argument
+	 * will still remain on their default values.
+	 * See: $.fn.prependFoldingArrowIcon.DEFAULTS
+	 */
 	$.fn.prependFoldingArrowIcon = function(options) {
 		const opts = expandOptions(options, $.fn.prependFoldingArrowIcon.DEFAULTS);
 		const svg = createSVG(opts);
@@ -140,6 +178,14 @@
 		return this;
 	};
 	
+	/**
+	 * jQuery plug-in function which inserts a new SVG icon into every node of the
+	 * jQuery result-set to which it is applied.
+	 * The icon gets appended to the exiting node's content, preceded by a separator string
+	 * (defaulting to an ensp, i.e a space of exactly 0.5em width).
+	 * Otherwise the same as $.fn.prependFoldingArrowIcon.
+	 * See: $.fn.appendFoldingArrowIcon.DEFAULTS
+	 */
 	$.fn.appendFoldingArrowIcon = function(options) {
 		const opts = expandOptions(options, $.fn.prependFoldingArrowIcon.DEFAULTS);
 		const svg = createSVG(opts);
@@ -176,6 +222,22 @@
 		}		
 	}
 	
+	/**
+	 * jQuery plug-in function. 
+	 * Just like $.fn.prependFoldingArrowIcon and $.fn.appendFoldingArrowIcon this function
+	 * is to be called just once. It defines and saves the options for
+	 * $.fn.transformFoldingArrowIcon.
+	 * If you don't want to use the latter plug-in function (needed for Internet Explorer and Edge)
+	 * or if you are fine with the default transformation options and don't need to create
+	 * a custom setup, you don't need to use this function.
+	 * But if you want to modify the default behaviour of that plug-in function,
+	 * you have to call this plug-in once before.
+	 * The only argument is an object defining those options you want to override,
+	 * see: $.fn.transformFoldingArrowIcon.DEFAULTS
+	 * The jQuery resultset on which this plug-in gets applied should be exactly the same
+	 * as the one you called $.fn.prependFoldingArrowIcon on, i.e. the set of nodes
+	 * to which a folding-arrow icon has been added.
+	 */
 	$.fn.setupFoldingArrowIconTransformation = function(options) {
 		const opts = expandOptions(options, $.fn.transformFoldingArrowIcon.DEFAULTS);
 		this.each(function() {
@@ -197,6 +259,22 @@
 		return this;
 	}
 	
+	/**
+	 * jQuery plug-in function to be called for a node already fitted with a folding-arrow
+	 * inline SVG icon. For every node of the resultset, this function first looks
+	 * for state information by applying a state-check-selector.
+	 * This is defined by the option 'ifIsSelector' and defaults to ".showing". 
+	 * If this selector matches a node of the result-set, a transition will be added
+	 * to that node's Icon (which has to be a direct child node of type SVG with
+	 * a certain class name, defaulting to 'folding-arrow-icon' - you may change that
+	 * via the option 'svgClass', but if you do, be sure to set the same option in the
+	 * prependFoldingArrowIcon() call as well as in setupFoldingArrowIconTransformation()).
+	 * If the selector doesn't match, an existing transformation will be removed again.
+	 *
+	 * This function is needed for compatibility with browsers like Microsoft Edge and
+	 * Internet Explorer, which don't support CSS transformations for inine SVG, but
+	 * require a transformation attribute in the SVG's DOM.
+	 */
 	$.fn.transformFoldingArrowIcon = function() {
 		const defaults = $.fn.transformFoldingArrowIcon.DEFAULTS;
 		this.each(function() {
@@ -224,16 +302,19 @@
 	
 	$.fn.appendFoldingArrowIcon.PRESETS =
 	$.fn.prependFoldingArrowIcon.PRESETS = {
+		//Default Preset for right-pointing triangle and 90 degrees rotation transformation.
 		"arrow-right": {	
 			graph: [{element: "path", attributes: {"d": "M-3,-5 L5,0 L-3,5"}}],
 			closePath: true
 		},
+		//Default Preset for up-pointing triangle when closed and vertical flip transformation.
 		"arrow-up-down": {
 			graph: [{element: "path", attributes: {"d": "M-5,-3 L0,5 L5,-3"}}],
 			closePath: true,
 			svgClass: "folding-arrow-icon updown",
 			transformations: [{">g": "scale(1 -1)"}]
 		},
+		//Preset for showing a plus icon with a 45 degree transformation (resulting in an X icon for unfolded content)
 		"plus": {
 			graph: [{element: "line", attributes: {"x1": "-10", "y1": "0", "x2": "10", "y2":"0", "class": "h"}},
 					{element: "line", attributes: {"x1": "0", "y1": "-10", "x2": "0", "y2":"10", "class": "v"}}],
@@ -242,6 +323,7 @@
 			viewboxMargin: 1,
 			transformations: [{">g": "rotate(45)"}]
 		},
+		//Preset for a burger icon (three stacked horizontal lines) with a transformation to form an X icon when unfolded
 		"burger": {
 			containerClass: "burger",
 			svgClass: "burger-icon",
@@ -257,15 +339,21 @@
 				{"g": "rotate(45)"}
 			]
 		},
+		//Preset for a simple dash icon without transformation, meant as bullet for 
+		//static list items in a list also containing foldable list entries.
 		"dash": {
 			graph: [{element: "line", attributes: {"x1": "-3", "x2": "5", "y1": "0", "y2": "0"}}],
 			svgClass: "folding-arrow-icon static dash"
 		},
+		//Preset for a simple disc (circle) icon without transformation, meant as alternative bullet for 
+		//static list items in a list also containing foldable list entries.
 		"disc": {
 			graph: [{element: "circle", attributes: {"cx": "0", "cy": "0", "r": "3"}}],
 			svgClass: "folding-arrow-icon static disc"
 		}
 	}
+	//Preset for a plus icon which gets transformed into a minus icon when unfolded.
+	//(Derived from the "plus"-preset.)
 	$.fn.prependFoldingArrowIcon.PRESETS["plus-minus"] = copyOfPreset("plus")
 		.prop("svgClass", "folding-arrow-icon plus-minus") //must differ from "plus" class in order to be able to assign different transformation & transition via CSS!
 		.prop("transformations", [{"line.v": "scale(1 0)"}])
@@ -274,6 +362,14 @@
 	function copyOfPreset(defaultName) {
 		return new PresetCopy(defaultName);
 	}
+	/**
+	 * JavaScript function (not a jQuery plug-in function!, but only defined as a property of
+	 * the plug-in functions in order not to pollute the global namespace) in order to create
+	 * a copy of a built-in preset which may the be altered in order to create a new, derived
+	 * preset.
+	 * Argument: Name of the preset to copy.
+	 * Result: Object of class PresetCopy (see above).
+	 */
 	$.fn.appendFoldingArrowIcon.copyOfPreset =
 	$.fn.prependFoldingArrowIcon.copyOfPreset = copyOfPreset;
 	

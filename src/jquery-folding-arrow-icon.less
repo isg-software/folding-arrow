@@ -1,6 +1,13 @@
+@iconWidth: 0.8em;
+//The default separator is an &ensp;, which is exaclty 0.5em wide.
+//If you want to use different separator while still using the icon as a list item bullet,
+//then you should make a copy of this style sheet and change the separatorWidth accordingly 
+//to your actual separator string's width!
+@separatorWidth: 0.5em;
+
 svg.folding-arrow-icon {
-	height: 0.8em;
-	width: 0.8em;
+	height: @iconWidth;
+	width: @iconWidth;
 	vertical-align: baseline;
 
 	> g {
@@ -39,7 +46,7 @@ ul.folding-arrows {
 	list-style-type: none;
 
 	> li.folding-arrow {
-		text-indent: -1.3em;
+		text-indent: -(@iconWidth + @separatorWidth);
 		:not(.folding-arrow) { //Notiz: Hier z.B. :not(li.folding.arrow) zu schreiben, funktioniert nicht in Firefox (wohl aber WebKit)!
 			text-indent: 0;
 		}

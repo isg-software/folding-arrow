@@ -7,35 +7,108 @@
 
 <h1 id="folding-arrow">folding-arrow</h1>
 
-<p>jQuery plug-in for inserting arrow icons for foldable list items, sections, burger menu icons etc. as inline SVG with CSS support.</p>
+<p>jQuery plug-in for inserting arrow icons for foldable list items, sections, burger menu icons etc. as inline SVG with CSS support. This especially includes the possibility of state transformations animated by CSS transitions.</p>
 
 <h2 id="motivation">Motivation</h2>
 
-<p>Have a look at the demo page, and you&#8217;ll most certainly recognize the demonstrated icons, like the triangle icons used to indicate whether a (sub)section is visible or collapsed/folded. One of the most common usages of such icons is in hierarchical lists to show list items with sub-lists and the state of the latter&#8217;s visibility. For a collapsed sublist, the icon is usually an arrow to the right, if it&#8217;s visible, the arrow points down.</p>
+<p>Have a look at the demo page, and you&#8217;ll most certainly recognize the demonstrated icons, like triangle icons used to indicate whether a (sub)section is visible or collapsed/folded. One of the most common uses of such icons is in hierarchical lists to show list items with sub-lists and the state of the latter&#8217;s visibility. For a collapsed sublist, the icon is usually an arrow to the right, whereas the arrow points down if the sublist&#8217;s unfolded.</p>
 
-<p>Since the actual look of the icon is not the major content of the HTML document, but a simply a presentation style, a common way to achieve this is to simply add a class to the foldable list item which represents the logical state (open/visible or closed/collaped/folded). The icon itself (being presentation) could simply be added by CSS, e.g. with rules like this:</p>
+<p>Since the actual look of the icon is not the major content of the HTML document, but simply a presentation style, a common way to achieve this is to simply add a class to the foldable list item which represents the logical state (open/visible or closed/collapsed/folded). The icon itself (being presentation) could simply be added by CSS, e.g. with rules like this:</p>
 
 <pre><code class="css">li::before{ content: url(arrowRight.svg) }
 li.open::before{ content: url(arrowDown.svg) }
 </code></pre>
 
-<p>Now the JavaScript which shows or hides the list item&#8217;s content simply has to add or remove the <code>open</code> class to resp. from the <code>li</code> node.</p>
+<p>Then the JavaScript which shows/unfolds the list item&#8217;s content simply has to add the class <code>open</code> to the <code>li</code> node, and the script code which hides/shows the item&#8217;s content has to remove that class again.</p>
 
-<p>This CSS-only way with external image files has, however, some disadvantages. Especially the sizing / scaling of the image might be tricky (e.g. <code>content</code> can&#8217;t be sized by CSS but has have a fixed size and can&#8217;t depend dynamically on the font size). And when opening or closing the sub list, the image simply gets replaced, so the arrows flip without animation. These were the main reasons for the development of this plug-in:</p>
+<p>This CSS-only way with external image files has, however, some disadvantages. Especially the sizing / scaling of the image might be tricky (e.g. <code>content</code> can&#8217;t be sized by CSS but has have a fixed size and can&#8217;t depend dynamically on the font size). And when opening or closing the sublist, the image simply gets replaced, i.e. the arrow flips without animation. These were the main reasons for the development of this plug-in:</p>
 
-<p>This plug-in dynamically inserts an inline-SVG image into the HTML. Other than externally loaded and embedded SVG documents, inline-SVG may be styled by CSS rules of the HTML document.</p>
+<p>This plug-in dynamically inserts an inline-SVG image into the HTML. Other than externally loaded and embedded SVG documents, inline-SVG is a part of the HTML document and may be styled by the HTML document&#8217;s CSS. I.e. you may common define styles for the HTML list markup and for the included list icons at one central place.</p>
 
 <ul>
-<li>So you may (and have to) use CSS to size the icon and to define its properties like stroke, line width, fill color etc.</li>
-<li>You may style the image and the text (list item, section heading etc.) accordingly, even dynamic styles like a hover effect to both of them (see demos).</li>
-<li>And of course, CSS transitions allow for a smooth, animated state change like a rotating triangle, a flipping arrow sign or a plus being smoothly transformed into a minus (see demos).</li>
+<li>You may (actually <em>have to</em>) use CSS to size the icon and to define its properties like stroke, line width, fill color etc.</li>
+<li>You may style the image and the text (list item, section heading etc.) accordingly, even add dynamic styles like a hover effect to both of them (see demos).</li>
+<li>And of course, CSS transitions allow for a smooth, animated state transition like a rotating triangle, a flipping arrow sign or a plus being smoothly transformed into a minus (see demos).</li>
 </ul>
 
-<p>The plug-in itself doesn&#8217;t stop there, but is configurable, so you can even (in JavaScript) define the actual SVG image. Some typical images are provided as presets (including a transition). You can simply use these presets, modify them or create some custom images from scratch.</p>
+<p>But the plug-in doesn&#8217;t stop there: It&#8217;s configurable, so you can even define the actual SVG image (in JavaScript). Some typical images are provided as presets (including a transition). You can simply use these presets, modify them or create some custom images from scratch.</p>
 
-<p><strong>Please note:</strong> <em>This plug-in concentrates on drawing the SVG icon (which may be animated with CSS transitions). The actual content-folding is not part of this plug-in.</em> The demo page uses simple calls to jQuery&#8217;s built-in <code>slideDown()</code> and <code>slideUp()</code> functions, but the demo code still has to do two things on each click event: fold or unfold the content <em>and</em> flip the CSS state class of the list item or heading in order to change the icon. I&#8217;m considering publishing another jQuery plug-in with the focus on showing and hiding sections and automatically flipping a state class (like <code>open</code> in the example above) of a corresponding &#8220;header&#8221; element, to make that job even easier. Both plug-ins may then be combined for very simple (un-)folding of sections or list items.</p>
+<p><strong>Please note:</strong> <em>This plug-in concentrates on drawing the SVG icon (which may be animated with CSS transitions). The actual content-folding is not part of this plug-in.</em> The demo page uses simple calls to jQuery&#8217;s built-in <code>slideDown()</code> and <code>slideUp()</code> functions, but the demo code still has to do at least <em>two</em> things on each click event: fold or unfold the content <em>and</em> toggle the CSS state class (like <code>open</code> in the example above) of the list item or heading in order to change the icon. And if you want Internet Explorer- or MS Edge support, the event handler even has to perform a third step by calling an additional plug-in function for transforming the icon (since these MS browsers don&#8217;t support CSS transformations on SVG).</p>
+
+<p>I&#8217;m considering publishing another jQuery plug-in with the focus on showing and hiding sections and automatically toggling a state class of a corresponding &#8220;header&#8221; element, to make that job even easier. Both plug-ins may then be combined for very simple (un-)folding of sections or list items.</p>
 
 <p><strong>Not released yet!</strong> The demo page is pretty much complete, but the reference documentation is still missing.</p>
+
+<h2 id="gettingstarted">Getting started</h2>
+
+<p>Let&#8217;s, for the start, assume, you have a simple unordered list (<code>&lt;ul&gt;</code>) and want to use folding-arrows (right- or downpointing triangles by default) instead of normal list bullets for every list item (<code>&lt;li&gt;</code>) of that list (not including sublists inside its list items).</p>
+
+<p>What do you have to do at least—in the simplest case?</p>
+
+<ol>
+<li>Fit the unordered list with the class <code>folding-arrows</code><a href="#fn:1" id="fnref:1" title="see footnote" class="footnote"><sup>1</sup></a>:
+
+<pre><code class="html">&lt;ul class=&quot;folding-arrows&quot;&gt;
+	&lt;li&gt;...
+		&lt;ul&gt;...&lt;/ul&gt; <!-- sub list -->
+	&lt;/li&gt;
+	...
+&lt;/ul&gt;
+</code></pre></li>
+<li>Include the Script file as well as jQuery inside your HTML&#8217;s <code>&lt;head&gt;</code>:
+
+<pre><code class="html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://code.jquery.com/jquery-3.2.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;dist/jquery-folding-arrow-icon-min.js&quot;&gt;&lt;/script&gt;
+</code></pre></li>
+<li>Include the default stylesheet that came along with the plug-in<a href="#fn:2" id="fnref:2" title="see footnote" class="footnote"><sup>2</sup></a>:
+
+<pre><code class="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;dist/jquery-folding-arrow-icon.css&quot;&gt;
+</code></pre></li>
+<li>Write some custom JavaScript code to apply the plug-in: Write a query selecting all list items which should be fitted with the folding arrow icon. In this case, we select every list item of any unordered list of class <code>folding-arrows</code>, see above. To prepend the icon to the selected list items, call the <code>prependFoldingArrowIcon</code> plug-in—in this simple case without arguments, which implies all options are left on default values:
+
+<pre><code class="javascript">$(&quot;ul.folding-arrows &gt; li&quot;).prependFoldingArrowIcon();
+</code></pre></li>
+<li>The included CSS file (see step 3) already contains default styles for lists of class <code>folding-arrows</code>. Especially, it turns off the default bullets and indents the first line more to the left such that the inline SVG icon (being part of the content of the first line) is arranged to the left of the actual text content and—at least with default options—the actual content of the line following the icon and its separator<a href="#fn:3" id="fnref:3" title="see footnote" class="footnote"><sup>3</sup></a> aligns perfectly with the left margin of the following lines.<br />
+<strong>But</strong> the CSS does <em>not</em> define default visual styles for the icon, nor does the plug-in. The latter simply draws a path forming a triangle, but you have to style that path on your own by adding CSS rules for the <code>stroke</code> and <code>fill</code> properties, like e.g.:
+
+<pre><code class="css">.folding-arrow-icon path {
+    stroke: none;
+    fill: silver;
+}
+</code></pre></li>
+<li>Now you have a folding-arrow icon able to indicate whether the contents of the list item are visible or not. But you still have to add JavaScript handlers to capture events (like a click on the icon or on a link in the list item) which should actually toggle the state (fold or unfold content). This event handler has to do three things:
+
+<ol>
+<li>Actually show or hide the content, and</li>
+<li>add or remove the class <code>showing</code> to resp. from the <code>&lt;li&gt;</code> item in order to flip the state of the indicator.</li>
+<li>After adding/removing the <code>showing</code> class to/from the <code>&lt;li&gt;</code> item, the handler should also call another jQuery plug-in function provided by this library: <code>$(…).transformFoldingArrowIcon()</code>.<br />
+This is not actually mandatory, but it&#8217;s needed for compatibility with Microsoft&#8217;s browsers (Internet Explorer as well as Edge): Both don&#8217;t support SVG transitions defined via CSS, they only understand transition attributes inside the SVG&#8217;s DOM itself! The <code>transformFoldingArrowIcon</code> plug-in function therefore adds or removes a transition (by default a rotation by 90°) to/from the SVG&#8217;s DOM—dependent, by default, on the presence or absence of the <code>showing</code> class on the list item. It also supports adding a title to the image (e.g. showing as a pop-up when the mouse hovers over it) depending on the <code>showing</code> state, but by default, no title is added.
+(As already said in the introduction, I&#8217;m considering publishing a further jQuery plug-in which will simplify this sixth step.)</li>
+</ol></li>
+</ol>
+
+<p>See the demo page for working examples. You may create a copy of the demo page as a playground for your own experiments.</p>
+
+<p>Of course the plug-in is quite flexible and customizable. For one, it isn&#8217;t limited to be applied to list items, see demo page. It also doesn&#8217;t force you to stick to constraints like the use of the specific class <code>folding-arrows</code> and such. Those are simply defaults, and if you don&#8217;t want to stick to these defaults, you&#8217;ll have to do more customization. Especially the included CSS file applies default styles to elements equipped with default classes, and if you want to use other class names, you can&#8217;t simply use the default CSS file. Feel free to make a copy of the CSS and customize that to your needs. You should <em>not</em> edit the included stylesheet, since future updates of the plug-in might then overwrite and thus reset your local changes—also that would break the demo page.</p>
+
+<div class="footnotes">
+<hr />
+<ol>
+
+<li id="fn:1">
+<p>Of course you&#8216;re not obliged to use exaclty <em>that</em> class name, that&#8217;s just a default. But if you use another name, you can't use the included CSS file <code>jquery-folding-arrow-icon.css</code> in its original form (see step 3). You should then make a copy of that file and change that accordingly. <a href="#fnref:1" title="return to body" class="reversefootnote">&#160;&#8617;</a></p>
+</li>
+
+<li id="fn:2">
+<p>This CSS file contains rules for a) formatting the unordered list in such a way that the in&#8211;line SVG icons are aligned like list bullets (for any <code>ul.folding-arrows</code>, see step 1) and b) it contains default transformation and transition rules for rotating the originally right&#8211;pointing triangle by 90 degrees when the class <code>showing</code> gets added to a <code>li</code> (see step 6). <a href="#fnref:2" title="return to body" class="reversefootnote">&#160;&#8617;</a></p>
+</li>
+
+<li id="fn:3">
+<p>The separator is a string inserted between the inline SVG icon and the original list item&#8216;s content. It can be explicitly set in the plug&#8211;in&#8217;s options. The included CSS file assumes the separator to be exactly <code>0.5em</code> wide, which is the case for the default separator (<code>&amp;ensp;</code>). <a href="#fnref:3" title="return to body" class="reversefootnote">&#160;&#8617;</a></p>
+</li>
+
+</ol>
+</div>
 
 </body>
 </html>
