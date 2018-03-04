@@ -268,19 +268,19 @@
         
         #bullets .default svg path,
         #bullets .default svg circle {
-        	stroke: none;
-        	fill: silver;
+            stroke: none;
+            fill: silver;
         }
         #bullets .default svg.dash line {
-        	stroke: silver;
-        	stroke-width: 2px;
+            stroke: silver;
+            stroke-width: 2px;
         }
         #bullets .chevron svg path, 
         #bullets .chevron svg line,
         #bullets .chevron svg circle {
-        	stroke: navy;
-        	stroke.width: 1px;
-        	fill: none;
+            stroke: navy;
+            stroke.width: 1px;
+            fill: none;
         }
         
         h2.folding-arrow .folding-arrow-icon path {
@@ -375,10 +375,10 @@
         } 
         
         #burger-menu {
-    		border-top: 1px solid silver;
-    		border-bottom: 1px solid silver;
-    		border-radius: 0.2em;
-        	padding: 1em;
+            border-top: 1px solid silver;
+            border-bottom: 1px solid silver;
+            border-radius: 0.2em;
+            padding: 1em;
         }
     </style>
 
@@ -934,115 +934,115 @@ $("#plus-minus-circle > li").prependFoldingArrowIcon({
 <h3>Bullets for static (non-foldable) list items</h3>
 
 <ul id="bullets" class="folding-arrows">
-	<li class="arrow default">
-		<a href="#!">Preset <code>dash</code> and non-folding list items</a>
-		<ul class="folding-arrows dashes">
-			<li>The initial example at the beginning of this demo page demonstrated the
-				combination of arrow-icons with default CSS list bullets.
-				Yet—if you have lists of which only some list items are foldable
-				and others are static—you might want to use custom CSS images for
-				static list items, too. These can be styled via CSS to perfectly 
-				match the folding arrow icon style and provide a more homogeneous look
-				of the two kinds of bullets.</li>
-			<li>Two presets are pre-defined: a dash and a disc bullet. This example
-				shows the dash preset (see the following list item after this unfolded group).</li>
-			<li>Please note that the dash preset defines a dash not actually centered in the whole
-				of the square SVG area, but instead perfectly aligned with the default
-				triangle arrow icon, its left and aligned with the left edge of the right-pointing
-				triangle, and its right end aligned with the right vertex of the right-pointing
-				triangle. If, however, the triangle points downwards, the triangle is
-				no more aligned with the left end of the dash. (Of course, you may always
-				create your own dash icon via the <code>graph</code> option.)</li>
-				
-			<li>This very first dash example demonstrates how to create a dash visually
-				matching a silver and filled triangle:
-				<pre><code class="language-javascript">$("#bullets li.arrow.default").prependFoldingArrowIcon().setupFoldingArrowIconTransformation();
+    <li class="arrow default">
+        <a href="#!">Preset <code>dash</code> and non-folding list items</a>
+        <ul class="folding-arrows dashes">
+            <li>The initial example at the beginning of this demo page demonstrated the
+                combination of arrow-icons with default CSS list bullets.
+                Yet—if you have lists of which only some list items are foldable
+                and others are static—you might want to use custom CSS images for
+                static list items, too. These can be styled via CSS to perfectly 
+                match the folding arrow icon style and provide a more homogeneous look
+                of the two kinds of bullets.</li>
+            <li>Two presets are pre-defined: a dash and a disc bullet. This example
+                shows the dash preset (see the following list item after this unfolded group).</li>
+            <li>Please note that the dash preset defines a dash not actually centered in the whole
+                of the square SVG area, but instead perfectly aligned with the default
+                triangle arrow icon, its left and aligned with the left edge of the right-pointing
+                triangle, and its right end aligned with the right vertex of the right-pointing
+                triangle. If, however, the triangle points downwards, the triangle is
+                no more aligned with the left end of the dash. (Of course, you may always
+                create your own dash icon via the <code>graph</code> option.)</li>
+                
+            <li>This very first dash example demonstrates how to create a dash visually
+                matching a silver and filled triangle:
+                <pre><code class="language-javascript">$("#bullets li.arrow.default").prependFoldingArrowIcon().setupFoldingArrowIconTransformation();
 $("#bullets li.dash, #bullets ul.dashes li").prependFoldingArrowIcon({preset: "dash"});</code></pre>
 
-				<p>The first line prepends the default arrow icon and its default fallback 
-				transformation as demonstrated above already. The second line applies
-				the <code>dash</code> preset to the next list item (<code>li</code> of class <code>dash</code>)
-				and to every list item of this sub list (<code>ul</code> of class <code>dashes</code>
-				— and of class <code>folding-arrows</code> in order to inherit the styles
-				of the included CSS file which, among others, turn off the default list bullets).
-				Since these are static list items, no transformation is defined.</p>
-				</li>
-			<li>The following CSS styles are applied to define the looks of the list bullets
-				(class <code>default</code> denotes these first silver examples, while the later,
-				examples using thin blue strokes are denoted by class <code>chevron</code>):
+                <p>The first line prepends the default arrow icon and its default fallback 
+                transformation as demonstrated above already. The second line applies
+                the <code>dash</code> preset to the next list item (<code>li</code> of class <code>dash</code>)
+                and to every list item of this sub list (<code>ul</code> of class <code>dashes</code>
+                — and of class <code>folding-arrows</code> in order to inherit the styles
+                of the included CSS file which, among others, turn off the default list bullets).
+                Since these are static list items, no transformation is defined.</p>
+                </li>
+            <li>The following CSS styles are applied to define the looks of the list bullets
+                (class <code>default</code> denotes these first silver examples, while the later,
+                examples using thin blue strokes are denoted by class <code>chevron</code>):
 
-				<pre><code class="language-css">#bullets .default svg path,
+                <pre><code class="language-css">#bullets .default svg path,
 #bullets .default svg circle {
-	stroke: none;
-	fill: silver;
+    stroke: none;
+    fill: silver;
 }
 #bullets .default svg.dash line {
-	stroke: silver;
-	stroke-width: 2px;
+    stroke: silver;
+    stroke-width: 2px;
 }</code></pre>
-        		<p>The first rule defines the look of the arrow icon and the disc bullet in an example further down,
-        		the second rule defines the look of the dash icon if the next list item.</p></li>
-        	<li>The <code>dash</code> preset adds the classes <code>static</code> and <code>dash</code>
-        		to the SVGs class attribute. The latter can be used for styling (even if this has not been 
-        		done in this example, since we used the class of the list item itself) and the first one
-        		is meant to denote a general un-foldable list item. This has
-        		been used in the code presented in the introduction to this demo page which applies
-        		a click handler to all folding-arrow-icons <em>except</em> those of the
-        		<code>static</code> class (see above)</li>
-		</ul>
-	</li>
-	<li class="dash default">
-		Some static list item with dash icon. Unfold preceding item in order to see 
-		code and explanations.
-	</li>
-	<li class="arrow default">
-		<a href="#!">Preset <code>disc</code> and non-folding list items</a>
-		<ul class="folding-arrows discs">
-			<li>The following list item uses preset <code>disc</code> instead of <code>dash</code>:<
-				<pre><code class="language-javascript">$("#bullets li.disc").prependFoldingArrowIcon({preset: "disc"});</code></pre></li>
-			<li>The CSS for this disc bullet has already been defined in the previous example together
-				with the CSS for the arrow and the dash.</li>
-		</ul>
-	</li>
-	<li class="disc default">
-		Some static list item with disc icon. Unfold preceding item in order to see 
-		code and explanations.
-	</li>
-	<li class="arrow chevron">
-		<a href="#!">Preset <code>dash</code> and non-folding list items – alternative style</a>
-		<ul class="folding-arrows dashes">
-			<li>The next examples only differ from the previous ones in CSS styling.
-				Again, the following CSS code not only contains the styles for
-				the dash example, but also for the following disc bullet example:
-				The first selector applies to the arrow icon, which consists of one single <code>path</code>, 
-				the second selector selects the line of the dash icon, the third selects
-				the circle of the disc item. In this example, the actual CSS style rules are
-				the same for all three shapes:
-				<pre><code class="language-css">#bullets .chevron svg path, 
+                <p>The first rule defines the look of the arrow icon and the disc bullet in an example further down,
+                the second rule defines the look of the dash icon if the next list item.</p></li>
+            <li>The <code>dash</code> preset adds the classes <code>static</code> and <code>dash</code>
+                to the SVGs class attribute. The latter can be used for styling (even if this has not been 
+                done in this example, since we used the class of the list item itself) and the first one
+                is meant to denote a general un-foldable list item. This has
+                been used in the code presented in the introduction to this demo page which applies
+                a click handler to all folding-arrow-icons <em>except</em> those of the
+                <code>static</code> class (see above)</li>
+        </ul>
+    </li>
+    <li class="dash default">
+        Some static list item with dash icon. Unfold preceding item in order to see 
+        code and explanations.
+    </li>
+    <li class="arrow default">
+        <a href="#!">Preset <code>disc</code> and non-folding list items</a>
+        <ul class="folding-arrows discs">
+            <li>The following list item uses preset <code>disc</code> instead of <code>dash</code>:<
+                <pre><code class="language-javascript">$("#bullets li.disc").prependFoldingArrowIcon({preset: "disc"});</code></pre></li>
+            <li>The CSS for this disc bullet has already been defined in the previous example together
+                with the CSS for the arrow and the dash.</li>
+        </ul>
+    </li>
+    <li class="disc default">
+        Some static list item with disc icon. Unfold preceding item in order to see 
+        code and explanations.
+    </li>
+    <li class="arrow chevron">
+        <a href="#!">Preset <code>dash</code> and non-folding list items – alternative style</a>
+        <ul class="folding-arrows dashes">
+            <li>The next examples only differ from the previous ones in CSS styling.
+                Again, the following CSS code not only contains the styles for
+                the dash example, but also for the following disc bullet example:
+                The first selector applies to the arrow icon, which consists of one single <code>path</code>, 
+                the second selector selects the line of the dash icon, the third selects
+                the circle of the disc item. In this example, the actual CSS style rules are
+                the same for all three shapes:
+                <pre><code class="language-css">#bullets .chevron svg path, 
 #bullets .chevron svg line,
 #bullets .chevron svg circle {
-	stroke: navy;
-	stroke.width: 1px;
-	fill: none;
+    stroke: navy;
+    stroke.width: 1px;
+    fill: none;
 }</code></pre></li>
-		</ul>
-	</li>
-	<li class="dash chevron">
-		Some static list item with dash icon. Unfold preceding item in order to see 
-		code and explanations.
-	</li>
-	<li class="arrow chevron">
-		<a href="#!">Preset "dash" and non-folding list items</a>
-		<ul class="folding-arrows discs">
-			<li>The JavaScript code already has been shown in the previous disc example,
-				this example only differs in CSS, and the CSS rule already has been shown
-				in the immediately preceding second dash example description.</li>
-		</ul>
-	</li>
-	<li class="disc chevron">
-		Some static list item with disc icon. Unfold preceding item in order to see 
-		code and explanations.
-	</li>
+        </ul>
+    </li>
+    <li class="dash chevron">
+        Some static list item with dash icon. Unfold preceding item in order to see 
+        code and explanations.
+    </li>
+    <li class="arrow chevron">
+        <a href="#!">Preset "dash" and non-folding list items</a>
+        <ul class="folding-arrows discs">
+            <li>The JavaScript code already has been shown in the previous disc example,
+                this example only differs in CSS, and the CSS rule already has been shown
+                in the immediately preceding second dash example description.</li>
+        </ul>
+    </li>
+    <li class="disc chevron">
+        Some static list item with disc icon. Unfold preceding item in order to see 
+        code and explanations.
+    </li>
 </ul>
 
 <h2>Foldable Sections</h2>
@@ -1200,221 +1200,221 @@ h2.folding-arrow + div {
 
 <h2 class="sec al-right" id="sec-al-right-circle1">Combining chevron with circle</h2>
 <div>
-	<p>This example is a variation of the previous one, simply adding a circle to the 
-		"arrow-up-down" preset's icon.</p>
+    <p>This example is a variation of the previous one, simply adding a circle to the 
+        "arrow-up-down" preset's icon.</p>
     <p>In this case, the circle should be
-	    filled and should be <em>prepended</em> to the arrow icon, i.e. be placed behind
-	    the latter. Since the background circle is filled with a dark (blue) color,
-	    the foreground icon is formatted uses a white stroke.</p>
-	<p>For more explanations on the code, please refer to the previous list item examples!</p>
-	<pre><code class="language-javascript">var arrowUpDownInCircle = $.fn.prependFoldingArrowIcon.copyOfPreset("arrow-up-down")
-	.prependToGraph("circle", {"cx": "0", "cy": "0", "r": "10"})
-	.prop("viewboxRadius", 10)
-	.prop("viewboxMargin", 0)
-	.prop("closePath", false);
+        filled and should be <em>prepended</em> to the arrow icon, i.e. be placed behind
+        the latter. Since the background circle is filled with a dark (blue) color,
+        the foreground icon is formatted uses a white stroke.</p>
+    <p>For more explanations on the code, please refer to the previous list item examples!</p>
+    <pre><code class="language-javascript">var arrowUpDownInCircle = $.fn.prependFoldingArrowIcon.copyOfPreset("arrow-up-down")
+    .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "10"})
+    .prop("viewboxRadius", 10)
+    .prop("viewboxMargin", 0)
+    .prop("closePath", false);
 $("#sec-al-right-circle1").prependFoldingArrowIcon({
-	preset: arrowUpDownInCircle,
-	separator: ""
+    preset: arrowUpDownInCircle,
+    separator: ""
 }).click(function(){
-	openOrCloseSection($(this));
+    openOrCloseSection($(this));
 }).setupFoldingArrowIconTransformation({
-	preset: arrowUpDownInCircle
+    preset: arrowUpDownInCircle
 });</code></pre>
-	<pre><code class="language-css">#sec-al-right-circle1 .folding-arrow-icon circle {
-	stroke: none;
-	fill: #007;
+    <pre><code class="language-css">#sec-al-right-circle1 .folding-arrow-icon circle {
+    stroke: none;
+    fill: #007;
 }
 #sec-al-right-circle1 .folding-arrow-icon path {
-	stroke: white;
+    stroke: white;
 }</code></pre>
 </div>
 
 <h2 class="sec al-right" id="sec-al-right-circle2">Animating only part of the SVG</h2>
 <div>
     <p>In the previous example, the whole graphic, i.e. the circle with the white chevron 
-		in it, gets flipped vertically. In the end result, only the arrow has changed its
-		direction, while the circle still looks the same (naturally). Yet, during the transition,
-		the whole circle gets shrunken and expanded again. This may feel a litte obtrusive, so
-		<em>this</em> example provides a more discreet transition.</p>
-	<p>It simply differs from the previous example only in the one aspect, that instead
-		of the whole icon (or, to be more precise, the group inside the SVG image which consists
-		of two shapes, the circle and the array) now only the arrow shape is to be flipped, while
-		the circle rests untouched.</p>
-	<p>The main Javascript code and CSS styles are exactly the same as in the example above 
-		(except, of course,	that a different section ID is selected).
-		Here, we'll only show the code defining the different transformation and transition:
-	<pre><code class="language-css">#sec-al-right-circle2 .folding-arrow-icon > g {
-	transition: none;
-	transform: none;
+        in it, gets flipped vertically. In the end result, only the arrow has changed its
+        direction, while the circle still looks the same (naturally). Yet, during the transition,
+        the whole circle gets shrunken and expanded again. This may feel a litte obtrusive, so
+        <em>this</em> example provides a more discreet transition.</p>
+    <p>It simply differs from the previous example only in the one aspect, that instead
+        of the whole icon (or, to be more precise, the group inside the SVG image which consists
+        of two shapes, the circle and the array) now only the arrow shape is to be flipped, while
+        the circle rests untouched.</p>
+    <p>The main Javascript code and CSS styles are exactly the same as in the example above 
+        (except, of course, that a different section ID is selected).
+        Here, we'll only show the code defining the different transformation and transition:
+    <pre><code class="language-css">#sec-al-right-circle2 .folding-arrow-icon > g {
+    transition: none;
+    transform: none;
 }
 #sec-al-right-circle2 .folding-arrow-icon path {
-	transition: transform 0.5s;
+    transition: transform 0.5s;
 }
 #sec-al-right-circle2.showing .folding-arrow-icon path {
-	transform: scale(1, -1);
+    transform: scale(1, -1);
 }</code></pre>
-	<p>The first CSS rule overrides the default transition and tranformation for the group (<code>g</code>)
-		inherited from the included CSS file. The other two rules define a transition for the path node
-		and a transformation for the path node in case it is marked as <code>showing</code>.
-		Keep in mind, the image inside the generated SVG contains one group element <code>g</code>
-		with two childen: a <code>circle</code> and a <code>path</code> element, 
-		and we only want to transform the latter.</p>
-	<p>Since the end result looks the same as in the previous example, only the transitions (animations)
-		differ, and the IE-/Edge fallback defined by <code>setupFoldungArrowIconTransformation</code>
-		does not support transition, one might think at first glance, that nothing has to be changed
-		here, the setup method could still be called with the same preset as in the previous example.
-		<em>But that assumption would be wrong!</em> The reason for that is quite simply, that, if
-		the CSS rules would transform the arrow icon and the attribute rules would transform the whole
-		group, <em>both</em> transformations would be applied simultaniously, effectively cancelling
-		each other out (at least in browsers supporting CSS transformations). Attribute and CSS
-		transformations can only safely co-exist, if they define transformations for the very same
-		SVG elements, in which case (as already explained in »Foldable List Items«), the CSS transition
-		overrides the attribute transition.</p>
-	<p>So, we have to redefine the transformation attribute accordingly:</p>
-	<pre><code class="language-javascript">$("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
-	transformations: [{"path": "scale(1 -1)"}]
+    <p>The first CSS rule overrides the default transition and tranformation for the group (<code>g</code>)
+        inherited from the included CSS file. The other two rules define a transition for the path node
+        and a transformation for the path node in case it is marked as <code>showing</code>.
+        Keep in mind, the image inside the generated SVG contains one group element <code>g</code>
+        with two childen: a <code>circle</code> and a <code>path</code> element, 
+        and we only want to transform the latter.</p>
+    <p>Since the end result looks the same as in the previous example, only the transitions (animations)
+        differ, and the IE-/Edge fallback defined by <code>setupFoldungArrowIconTransformation</code>
+        does not support transition, one might think at first glance, that nothing has to be changed
+        here, the setup method could still be called with the same preset as in the previous example.
+        <em>But that assumption would be wrong!</em> The reason for that is quite simply, that, if
+        the CSS rules would transform the arrow icon and the attribute rules would transform the whole
+        group, <em>both</em> transformations would be applied simultaniously, effectively cancelling
+        each other out (at least in browsers supporting CSS transformations). Attribute and CSS
+        transformations can only safely co-exist, if they define transformations for the very same
+        SVG elements, in which case (as already explained in »Foldable List Items«), the CSS transition
+        overrides the attribute transition.</p>
+    <p>So, we have to redefine the transformation attribute accordingly:</p>
+    <pre><code class="language-javascript">$("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
+    transformations: [{"path": "scale(1 -1)"}]
 });</code></pre>
 </div>
 
 <h2 class="sec folding-plus al-right x">Using the "plus" preset and a hover effect</h2>
 <div>
     <p>This example picks up the plus preset again, which has already been demonstrated in the
-    	list items section, but was actually mainly created to be used this way in a section header.</p>
+        list items section, but was actually mainly created to be used this way in a section header.</p>
     <p>Here, we don't address a single header by its ID, but we use a class selection for all
-    	headers of classes <code>folding-plus</code> and class <code>x</code>:</p>
+        headers of classes <code>folding-plus</code> and class <code>x</code>:</p>
     <pre><code class="language-javascript">$("h2.folding-plus.x").prependFoldingArrowIcon({
-	preset: "plus",
-	viewboxMargin: 3,
-	separator: ""
+    preset: "plus",
+    viewboxMargin: 3,
+    separator: ""
 }).setupFoldingArrowIconTransformation({
-	preset: "plus"
+    preset: "plus"
 })
 .click(function(){
-	openOrCloseSection($(this));
+    openOrCloseSection($(this));
 });</code></pre>
-	<p>By constraining the selector to the additional class <code>x</code> this script setup is specific
-		to this demo with the plus, which should be rotated by 45° to form an X when the section
-		is unfolded.</p>
-	<p>The following CSS, however, is not constrained to the <code>x</code> class, but is
-		shared with the following demos using a plus, which gets transformed into a minus.</p>
-	<pre><code class="language-css">h2.sec.folding-plus {
-	color: #555;
+    <p>By constraining the selector to the additional class <code>x</code> this script setup is specific
+        to this demo with the plus, which should be rotated by 45° to form an X when the section
+        is unfolded.</p>
+    <p>The following CSS, however, is not constrained to the <code>x</code> class, but is
+        shared with the following demos using a plus, which gets transformed into a minus.</p>
+    <pre><code class="language-css">h2.sec.folding-plus {
+    color: #555;
 }
 h2.sec.folding-plus:hover {
-	color: #33e;
+    color: #33e;
 }
 h2.sec.folding-plus .folding-arrow-icon line {
-	stroke: #555;
-	stroke-width: 3;
-	stroke-linecap: round;
+    stroke: #555;
+    stroke-width: 3;
+    stroke-linecap: round;
 }
 h2.sec.folding-plus:hover .folding-arrow-icon line {
-	stroke: #33e;
+    stroke: #33e;
 }</code></pre>
-    	
+        
     <p>To demonstrate a further advantage of inline SVG images over external files loaded
-    	as <code>img</code>, this demo not only defines a static style for the plus icon,
-    	but it adds a hover effect to the whole header, highlighting the text as well
-    	as the SVG icon when the mouse cursor hovers over the heading.</p>
+        as <code>img</code>, this demo not only defines a static style for the plus icon,
+        but it adds a hover effect to the whole header, highlighting the text as well
+        as the SVG icon when the mouse cursor hovers over the heading.</p>
 
 </div>
 
 <h2 class="sec folding-plus al-right minus">"plus-minus" preset</h2>
 <div>
     <p>This example only differs from the previous one by loading the "plus-minus" preset
-    	which defines a different transformation (plus to minus instead of plus to X):</p>
+        which defines a different transformation (plus to minus instead of plus to X):</p>
     <pre><code class="javascript">$("h2.folding-plus.minus").prependFoldingArrowIcon({
-	preset: "plus-minus",
-	viewboxMargin: 3,
-	separator: ""
+    preset: "plus-minus",
+    viewboxMargin: 3,
+    separator: ""
 }).setupFoldingArrowIconTransformation({
-	preset: "plus-minus"
+    preset: "plus-minus"
 }).click(function(){
-	openOrCloseSection($(this));
+    openOrCloseSection($(this));
 });</code></pre>
-	<p>The CSS code is shared with the previous demo.</code>
+    <p>The CSS code is shared with the previous demo.</code>
 </div>
 
 <h2 class="sec folding-plus al-right x altered" id="sec-override-x">Manually overriding tranformation</h2>
 <div>
     <p>This demo is not intended to be used as blueprint for achieving the plus-to-minus 
-    	transformation, since that's, what the previously demonstrated "plus-minus" preset is for.
-    	It's simply a demo of how you might use plug-in options in order to locally modify
-    	the transformation defined by a preset.</p>
+        transformation, since that's, what the previously demonstrated "plus-minus" preset is for.
+        It's simply a demo of how you might use plug-in options in order to locally modify
+        the transformation defined by a preset.</p>
     <p>So let's assume that the "plus-minus" preset were not available and you wanted to 
-    	simply use the "plus" preset and override its transformation.</p>
+        simply use the "plus" preset and override its transformation.</p>
     <p>In this example wie use the same classes as in the first "plus" demo
-    	and add a further class <code>altered</code> intended to mark a heading where this
-    	transformation override should be added to:
-    	<code>&lt;h2 class="sec folding-plus al-right x altered" &gt;</code>.</p>
+        and add a further class <code>altered</code> intended to mark a heading where this
+        transformation override should be added to:
+        <code>&lt;h2 class="sec folding-plus al-right x altered" &gt;</code>.</p>
     <p>The "plus"-demo's javascript will now be executed first and thus
-    	will apply the "plus" preset to this heading, too.<br>
-    	But then we execute a second javascript snippet, which will subsequently
-    	alter the transformation setting for this example, defining a different
-    	fallback transition attribute for browsers not supporting CSS transformations:</p>
-    	 
+        will apply the "plus" preset to this heading, too.<br>
+        But then we execute a second javascript snippet, which will subsequently
+        alter the transformation setting for this example, defining a different
+        fallback transition attribute for browsers not supporting CSS transformations:</p>
+         
     <pre><code class="javascript">$("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
-		transformations: [{"line.v": "scale(1 0)"}]
-	});</code></pre>
-	
-	<p>For browsers <em>with</em> CSS transformations support, the CSS has to be overridden,
-		and here that's not just the transformation itself but also the according
-		transition:</p>
-		
-	<pre><code class="language-css">h2.folding-plus.x.altered .folding-arrow-icon.plus > g {
-	transform: none;
-	transition: none;
+    transformations: [{"line.v": "scale(1 0)"}]
+});</code></pre>
+    
+    <p>For browsers <em>with</em> CSS transformations support, the CSS has to be overridden,
+        and here that's not just the transformation itself but also the according
+        transition:</p>
+        
+    <pre><code class="language-css">h2.folding-plus.x.altered .folding-arrow-icon.plus > g {
+    transform: none;
+    transition: none;
 }
 h2.folding-plus.x.altered .folding-arrow-icon.plus line.v {
-	transition: transform 0.7s;
+    transition: transform 0.7s;
 }
 h2.folding-plus.x.altered.showing .folding-arrow-icon.plus line.v {
-	transform: scale(1, 0);
+    transform: scale(1, 0);
 }</code></pre>
 
-	<p>Note that in this case (CSS override), we not only add a new transformation
-		to the vertical line of the plus icon (<code>line</code> element of class <code>v</code>
-		as defined by the <code>"plus"</code> preset), but we also have to reset the
-		transformation of the <code>g</code> element, which is usually defined for this preset.
-		In the JavaScript version above that was not necessary, since overwriting the
-		<code>transformations</code> option completely replaces the inherited transformation.</p>
+    <p>Note that in this case (CSS override), we not only add a new transformation
+        to the vertical line of the plus icon (<code>line</code> element of class <code>v</code>
+        as defined by the <code>"plus"</code> preset), but we also have to reset the
+        transformation of the <code>g</code> element, which is usually defined for this preset.
+        In the JavaScript version above that was not necessary, since overwriting the
+        <code>transformations</code> option completely replaces the inherited transformation.</p>
 </div>
 
 <h2>Burger Menu Icon</h2>
 
 <p>Though this jQuery plug-in is really mainly made for use cases as demoed above, it
-	can be used for slightly different purposes, too, in which a single icon is needed which
-	can be flipped between two states with a simple transition, combinable with a CSS transition.</p>
-	
+    can be used for slightly different purposes, too, in which a single icon is needed which
+    can be flipped between two states with a simple transition, combinable with a CSS transition.</p>
+    
 <p>A burger icon for opening and closing some menu is one such use case, and for this rather
-	common type if icon, a further preset is included and shall be demoed here. (If it weren't,
-	of course you could use this plug-in's <code>graph</code> option to create your own icon,
-	as already has been demonstrated above.</p>
-	
+    common type if icon, a further preset is included and shall be demoed here. (If it weren't,
+    of course you could use this plug-in's <code>graph</code> option to create your own icon,
+    as already has been demonstrated above.</p>
+    
 
 
 <div id="burger-menu">
-	<span id="burger"></span>
-	<span class="display: inline-block">Click this burger! (In this demo that will not open a menu,
-	but display the example code.)</span>
-	<div id="burger-content">
-		<pre><code class="language-javascript">$("#burger").prependFoldingArrowIcon({
-	preset: "burger"
+    <span id="burger"></span>
+    <span class="display: inline-block">Click this burger! (In this demo that will not open a menu,
+    but display the example code.)</span>
+    <div id="burger-content">
+        <pre><code class="language-javascript">$("#burger").prependFoldingArrowIcon({
+    preset: "burger"
 }).setupFoldingArrowIconTransformation({
-	preset: "burger"
+    preset: "burger"
 }).click(function() {
-	openOrClose($("#burger"));
+    openOrClose($("#burger"));
 });</code></pre>
-		<pre><code class="language-css">#burger .burger-icon {
-	width: 40px;
-	height: 40px;
-	vertical-align: middle;
+        <pre><code class="language-css">#burger .burger-icon {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
 }</code></pre>
-		<p>Default CSS styles for elements of the class <code>burger-icon</code>,
-			especially color and line width as well as the transformation and transition
-			are loaded from the included CSS file <code>jquery-folding-arrow-icon.css</code>.</p>
-		
-	</div>
+        <p>Default CSS styles for elements of the class <code>burger-icon</code>,
+            especially color and line width as well as the transformation and transition
+            are loaded from the included CSS file <code>jquery-folding-arrow-icon.css</code>.</p>
+        
+    </div>
 </div>
 
 </body>
