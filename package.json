@@ -1,0 +1,36 @@
+{
+  "name": "jquery-folding-arrow-icon",
+  "version": "1.0.0",
+  "description": "jQuery plug-in for inserting inline SVG icons with transition support for toggling between two states, like list bullets for foldable lists, e.g. a right- or downpointing triangle with rotation transition. Other presets include a burger icon for a menu with transition to an X icon when opening the menu.",
+  "main": "dist/jquery-folding-arrow-icon-min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://isg-software@github.com/isg-software/folding-arrow.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "SVG",
+    "icon",
+    "foldable",
+    "collapse",
+    "unfold",
+    "transition",
+    "list",
+    "item",
+    "bullet",
+    "burger",
+    "menu",
+    "accordeon",
+    "animation"
+  ],
+  "author": "Immo Schulz-Gerlach <immo@isg-software.de> (http://www.isg-software.de)",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/isg-software/folding-arrow/issues"
+  },
+  "homepage": "https://github.com/isg-software/folding-arrow#readme"
+}
