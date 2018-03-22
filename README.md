@@ -2,6 +2,8 @@
 
 jQuery plug-in for inserting arrow icons for foldable list items, sections, burger menu icons etc. as inline SVG with CSS support. This especially includes the possibility of state transformations animated by CSS transitions.
 
+[Project Homepage](https://www.isg-software.de/foldingarrow/indexe.html)
+
 ## Motivation
 
 Have a look at the demo page, and you'll most certainly recognize the demonstrated icons, like triangle icons used to indicate whether a (sub)section is visible or collapsed/folded. One of the most common uses of such icons is in hierarchical lists to show list items with sub-lists and the state of the latter's visibility. For a collapsed sublist, the icon is usually an arrow to the right, whereas the arrow points down if the sublist's unfolded.
@@ -28,9 +30,6 @@ But the plug-in doesn't stop there: It's configurable, so you can even define th
 **Please note:** _This plug-in concentrates on drawing the SVG icon (which may be animated with CSS transitions). The actual content-folding is not part of this plug-in._ The demo page uses simple calls to jQuery's built-in `slideDown()` and  `slideUp()` functions, but the demo code still has to do at least _two_ things on each click event: fold or unfold the content _and_ toggle the CSS state class (like `open` in the example above) of the list item or heading in order to change the icon. And if you want Internet Explorer- or MS Edge support, the event handler even has to perform a third step by calling an additional plug-in function for transforming the icon (since these MS browsers don't support CSS transformations on SVG).
 
 I'm considering publishing another jQuery plug-in with the focus on showing and hiding sections and automatically toggling a state class of a corresponding "header" element, to make that job even easier. Both plug-ins may then be combined for very simple (un-)folding of sections or list items.
-
-
-**Not released yet!** The demo page is pretty much complete, but the reference documentation is still missing.
 
 ## Getting started
 

@@ -199,7 +199,7 @@
 	const setupDataName = "foldingArrowIconTransformationSetup";
 	
 	function findSVG(me, opts) {
-		return $("> svg" + classSelector(opts.svgClass), me);
+		return $("svg" + classSelector(opts.svgClass), me);
 	}
 	
 	function setTitle(me, opts, optSVG) {
