@@ -85,7 +85,8 @@
             $("#bullets li.dash, #bullets ul.dashes li").prependFoldingArrowIcon({preset: "dash"});
             $("#bullets li.disc, #bullets ul.discs li").prependFoldingArrowIcon({preset: "disc"});
             
-            $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon:not(.static)").click(function(){
+            $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon:not(.static)").click(function(ev){
+                ev.preventDefault();
                 openOrCloseLi($(this).parent());
             });
             $("ul.folding-arrows > li:not(.showing) > ul").hide();
@@ -95,53 +96,62 @@
                 titleHidden: "show content"
             })
             
-            $("#sec-prefix").prependFoldingArrowIcon({
-                closePath: false
-            }).setupFoldingArrowIconTransformation()
-            .click(function(){
-                openOrCloseSection($(this));
-            });
+            function registerSectionClickHandler(section) {
+                section.click(function() {
+                    openOrCloseSection(section)
+                }).children("a").first().click(function(ev) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    openOrCloseSection(section);
+                });
+            }
             
-            $("#sec-postfix").appendFoldingArrowIcon({
-                preset: "arrow-up-down",
-                closePath: false
-            }).setupFoldingArrowIconTransformation({
-                preset: "arrow-up-down"
-            })
-            .click(function(){
-                openOrCloseSection($(this));
-            });
+            registerSectionClickHandler(
+                $("#sec-prefix").prependFoldingArrowIcon({
+                    closePath: false
+                }).setupFoldingArrowIconTransformation()
+            );
             
-            $("#sec-al-right").appendFoldingArrowIcon({
-                preset: "arrow-up-down",
-                closePath: false,
-                separator: ""
-            }).setupFoldingArrowIconTransformation({
-                preset: "arrow-up-down"
-            })
-            .click(function(){
-                openOrCloseSection($(this));
-            });
+            registerSectionClickHandler(
+                $("#sec-postfix").appendFoldingArrowIcon({
+                    preset: "arrow-up-down",
+                    closePath: false
+                }).setupFoldingArrowIconTransformation({
+                    preset: "arrow-up-down"
+                })
+            );
+            
+            registerSectionClickHandler(
+                $("#sec-al-right").appendFoldingArrowIcon({
+                    preset: "arrow-up-down",
+                    closePath: false,
+                    separator: ""
+                }).setupFoldingArrowIconTransformation({
+                    preset: "arrow-up-down"
+                })
+            );
             
             var arrowUpDownInCircle = $.fn.prependFoldingArrowIcon.copyOfPreset("arrow-up-down")
                 .prependToGraph("circle", {"cx": "0", "cy": "0", "r": "10"})
                 .prop("viewboxRadius", 10)
                 .prop("viewboxMargin", 0)
                 .prop("closePath", false);
+            
             $("#sec-al-right-circle1, #sec-al-right-circle2").prependFoldingArrowIcon({
                 preset: arrowUpDownInCircle,
                 separator: ""
-            }).click(function(){
-                openOrCloseSection($(this));
-            });
-            
-            $("#sec-al-right-circle1").setupFoldingArrowIconTransformation({
-                preset: arrowUpDownInCircle
-            });
-            $("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
-                transformations: [{"path": "scale(1 -1)"}]
-            });
-            
+            })
+            registerSectionClickHandler(
+                $("#sec-al-right-circle1").setupFoldingArrowIconTransformation({
+                    preset: arrowUpDownInCircle
+                })
+            );
+            registerSectionClickHandler(
+                $("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
+                    transformations: [{"path": "scale(1 -1)"}]
+                })
+            );            
+
             $("h2.folding-plus.x").prependFoldingArrowIcon({
                 preset: "plus",
                 viewboxMargin: 3,
@@ -149,21 +159,21 @@
             }).setupFoldingArrowIconTransformation({
                 preset: "plus"
             })
-            .click(function(){
-                openOrCloseSection($(this));
-            });
-            $("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
-                transformations: [{"line.v": "scale(1 0)"}]
-            });
-            $("h2.folding-plus.minus").prependFoldingArrowIcon({
-                preset: "plus-minus",
-                viewboxMargin: 3,
-                separator: ""
-            }).setupFoldingArrowIconTransformation({
-                preset: "plus-minus"
-            }).click(function(){
-                openOrCloseSection($(this));
-            });
+            registerSectionClickHandler($("h2.folding-plus.x:not(.altered)"));
+            registerSectionClickHandler(
+                $("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
+                    transformations: [{"line.v": "scale(1 0)"}]
+                })
+            );
+            registerSectionClickHandler(
+                $("h2.folding-plus.minus").prependFoldingArrowIcon({
+                    preset: "plus-minus",
+                    viewboxMargin: 3,
+                    separator: ""
+                }).setupFoldingArrowIconTransformation({
+                    preset: "plus-minus"
+                })
+            );
 
             $("h2.sec").each(function() {
                 $(this).next().hide();
@@ -172,10 +182,12 @@
             });
 
             $("#burger").prependFoldingArrowIcon({
-                preset: "burger"
+                preset: "burger",
+                separator: ""
             }).setupFoldingArrowIconTransformation({
                 preset: "burger"
-            }).click(function() {
+            }).click(function(ev) {
+                ev.preventDefault();
                 openOrClose($("#burger"));
                 $("#burger-content").slideToggle();
             });
@@ -295,6 +307,12 @@
             padding: 0.2em;
             margin-top: 0;
         }
+        
+        h2.sec a, h2.sec a:link, h2.sec a:visited {
+            text-decoration: none;
+            color: #007;
+        }
+        
         h2.folding-arrow + div > :first-child {
             margin-top: 0;
         }
@@ -333,10 +351,10 @@
             transform: scale(1, -1);
         }
         
-        h2.sec.folding-plus {
+        h2.sec.folding-plus a:link, h2.sec.folding-plus a:visited {
             color: #555;
         }
-        h2.sec.folding-plus:hover {
+        h2.sec.folding-plus:hover a, h2.sec.folding-plus a:focus {
             color: #33e;
         }
         h2.sec.folding-plus .folding-arrow-icon line {
@@ -514,6 +532,7 @@ as the following ones) in order to show and hide sub-lists:</p>
     }
 
     $("ul.folding-arrows > li > a, ul.folding-arrows > li > svg.folding-arrow-icon:not(.static)").click(function(){
+        ev.preventDefault();
         openOrCloseLi($(this).parent());
     });
     $("ul.folding-arrows > li:not(.showing) > ul").hide();
@@ -1053,13 +1072,20 @@ a document section by clicking the heading.</p>
 
 <p>The secions in these examples all have the following structure:</p>
 
-<pre><code class="language-html">&lt;h2 class="sec"&gt;This is a section header&lt;/h2&gt;
+<pre><code class="language-html">&lt;h2 class="sec"&gt;&lt;a href="#!"&gt;This is a section header&lt;/a&gt;&lt;/h2&gt;
 &lt;div&gt;
     &lt;p&gt;Section content. Note this is all wrapped in one single div in order to simplify
     collapsing or re-showing this content block.&lt;/p&gt;
     &lt;p&gt;See JavaScript function openOrCloseSection() below, which will simply hide or show
     the first sibling after the heading, which is exactly this div.&lt;/p&gt;
 &lt;/div&gt;</code></pre>
+
+<p>The whole heading should accept a mouse click event, but the link element (<code>a</code>) 
+    inside is to make sure that the section can also be toggled by keyboard users (accessibility!).
+    See the <code>registerClickHandler()</code> function below, which registers one click
+    handler at the heading itself, one on the link, and the latter has to prevent event bubbling
+    so that the handler is not executed twice (once for clicking the link and a second time for
+    clicking the heading)!</p>
 
 <p>All of the section examples use some common JavaScript and CSS code. 
     Note that the <code>openOrCloseSection()</code> function not only folds or unfolds
@@ -1084,6 +1110,17 @@ function openOrCloseSection(h) {
         h.next().slideUp(500);
     }
 }
+
+function registerSectionClickHandler(section) {
+    section.click(function() {
+        openOrCloseSection(section)
+    }).children("a").first().click(function(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        openOrCloseSection(section);
+    });
+}
+
 $(function(){
     $("h2.sec").each(function() {
         //Initially collapse all sections.
@@ -1122,16 +1159,15 @@ h2.folding-arrow + div {
     add up.
 */</code></pre>
 
-<h2 class="sec" id="sec-prefix">Prepended arrow icon</h2>
+<h2 class="sec" id="sec-prefix"><a href="#!">Prepended arrow icon</a></h2>
 <div>
     <p>This is a very simple example and uses the same function to prepend an icon 
         as did the previous list item demos:</p>
-    <pre><code class="language-javascript">$("#sec-prefix").prependFoldingArrowIcon({
-    closePath: false
-}).setupFoldingArrowIconTransformation()
-.click(function(){
-    openOrCloseSection($(this));
-});</code></pre>
+    <pre><code class="language-javascript">registerSectionClickHandler(
+    $("#sec-prefix").prependFoldingArrowIcon({
+        closePath: false
+    }).setupFoldingArrowIconTransformation()
+);</code></pre>
     <p>As with the list item examples, you still have to add CSS styles to define
         the looks of the generated SVG. Here, we'll define some styles which will
         not only be used for this example, but also for some more of the following demos:</p>
@@ -1142,7 +1178,7 @@ h2.folding-arrow + div {
 }</code></pre>
 </div>
 
-<h2 class="sec" id="sec-postfix">Appended arrow icon</h2>
+<h2 class="sec" id="sec-postfix"><a href="#!">Appended arrow icon</a></h2>
 <div>
     <p>A variation of the previous example, differing in the following aspects:</p>
     <ol>
@@ -1154,22 +1190,21 @@ h2.folding-arrow + div {
             a rotation transition, but a vertical mirroring transition to switch between them.
             (Of course you could override that by defining a 180° rotation, too.)</li>
     </ol>
-    <pre><code class="language-javascript">$("#sec-postfix").appendFoldingArrowIcon({
-    preset: "arrow-up-down",
-    closePath: false
-}).setupFoldingArrowIconTransformation({
-    preset: "arrow-up-down"
-})
-.click(function(){
-    openOrCloseSection($(this));
-});</code></pre>
+    <pre><code class="language-javascript">registerSectionClickHandler(
+    $("#sec-postfix").appendFoldingArrowIcon({
+        preset: "arrow-up-down",
+        closePath: false
+    }).setupFoldingArrowIconTransformation({
+        preset: "arrow-up-down"
+    })
+);</code></pre>
     <p>No further CSS code needed: This example re-uses the CSS shown in the previous example
         for defining the looks of the arrow icon itself and the included 
         <code>jquery-folding-arrow-icon.css</code> file's default rules for the transition
         defined by the preset.</p>
 </div>
 
-<h2 class="sec al-right" id="sec-al-right">Right-aligned arrow icon</h2>
+<h2 class="sec al-right" id="sec-al-right"><a href="#!">Right-aligned arrow icon</a></h2>
 <div>
     <p>Again, a variation of the previous example, mainly differing in the alignment
     of the icon via special CSS code. The following CSS is used for this and all other
@@ -1185,20 +1220,19 @@ h2.folding-arrow + div {
         Since the Icon is independently aligned, the <code>separator</code> property
         gets redefined in order not to append an unnecessary space character to the
         heading text (even though that would not actually be visible):</p>
-    <pre><code class="language-javascript">$("#sec-al-right").appendFoldingArrowIcon({
-    preset: "arrow-up-down",
-    closePath: false,
-    separator: ""
-}).setupFoldingArrowIconTransformation({
-    preset: "arrow-up-down"
-})
-.click(function(){
-    openOrCloseSection($(this));
-});</code></pre>
+    <pre><code class="language-javascript">registerSectionClickHandler(
+    $("#sec-al-right").appendFoldingArrowIcon({
+        preset: "arrow-up-down",
+        closePath: false,
+        separator: ""
+    }).setupFoldingArrowIconTransformation({
+        preset: "arrow-up-down"
+    })
+);</code></pre>
 </div>
 
 
-<h2 class="sec al-right" id="sec-al-right-circle1">Combining chevron with circle</h2>
+<h2 class="sec al-right" id="sec-al-right-circle1"><a href="#!">Combining chevron with circle</a></h2>
 <div>
     <p>This example is a variation of the previous one, simply adding a circle to the 
         "arrow-up-down" preset's icon.</p>
@@ -1212,14 +1246,16 @@ h2.folding-arrow + div {
     .prop("viewboxRadius", 10)
     .prop("viewboxMargin", 0)
     .prop("closePath", false);
-$("#sec-al-right-circle1").prependFoldingArrowIcon({
+
+$("#sec-al-right-circle1, #sec-al-right-circle2").prependFoldingArrowIcon({
     preset: arrowUpDownInCircle,
     separator: ""
-}).click(function(){
-    openOrCloseSection($(this));
-}).setupFoldingArrowIconTransformation({
-    preset: arrowUpDownInCircle
-});</code></pre>
+})
+registerSectionClickHandler(
+    $("#sec-al-right-circle1").setupFoldingArrowIconTransformation({
+        preset: arrowUpDownInCircle
+    })
+);</code></pre>
     <pre><code class="language-css">#sec-al-right-circle1 .folding-arrow-icon circle {
     stroke: none;
     fill: #007;
@@ -1229,7 +1265,7 @@ $("#sec-al-right-circle1").prependFoldingArrowIcon({
 }</code></pre>
 </div>
 
-<h2 class="sec al-right" id="sec-al-right-circle2">Animating only part of the SVG</h2>
+<h2 class="sec al-right" id="sec-al-right-circle2"><a href="#!">Animating only part of the SVG</a></h2>
 <div>
     <p>In the previous example, the whole graphic, i.e. the circle with the white chevron 
         in it, gets flipped vertically. In the end result, only the arrow has changed its
@@ -1271,12 +1307,14 @@ $("#sec-al-right-circle1").prependFoldingArrowIcon({
         SVG elements, in which case (as already explained in »Foldable List Items«), the CSS transition
         overrides the attribute transition.</p>
     <p>So, we have to redefine the transformation attribute accordingly:</p>
-    <pre><code class="language-javascript">$("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
-    transformations: [{"path": "scale(1 -1)"}]
-});</code></pre>
+    <pre><code class="language-javascript">registerSectionClickHandler(
+    $("#sec-al-right-circle2").setupFoldingArrowIconTransformation({
+        transformations: [{"path": "scale(1 -1)"}]
+    })
+); </code></pre>
 </div>
 
-<h2 class="sec folding-plus al-right x">Using the "plus" preset and a hover effect</h2>
+<h2 class="sec folding-plus al-right x"><a href="#!">Using the "plus" preset and a hover effect</a></h2>
 <div>
     <p>This example picks up the plus preset again, which has already been demonstrated in the
         list items section, but was actually mainly created to be used this way in a section header.</p>
@@ -1289,18 +1327,16 @@ $("#sec-al-right-circle1").prependFoldingArrowIcon({
 }).setupFoldingArrowIconTransformation({
     preset: "plus"
 })
-.click(function(){
-    openOrCloseSection($(this));
-});</code></pre>
+registerSectionClickHandler($("h2.folding-plus.x:not(.altered)"));</code></pre>
     <p>By constraining the selector to the additional class <code>x</code> this script setup is specific
         to this demo with the plus, which should be rotated by 45° to form an X when the section
         is unfolded.</p>
     <p>The following CSS, however, is not constrained to the <code>x</code> class, but is
         shared with the following demos using a plus, which gets transformed into a minus.</p>
-    <pre><code class="language-css">h2.sec.folding-plus {
+    <pre><code class="language-css">h2.sec.folding-plus a:link, h2.sec.folding-plus a:visited {
     color: #555;
 }
-h2.sec.folding-plus:hover {
+h2.sec.folding-plus:hover a, h2.sec.folding-plus a:focus {
     color: #33e;
 }
 h2.sec.folding-plus .folding-arrow-icon line {
@@ -1319,23 +1355,23 @@ h2.sec.folding-plus:hover .folding-arrow-icon line {
 
 </div>
 
-<h2 class="sec folding-plus al-right minus">"plus-minus" preset</h2>
+<h2 class="sec folding-plus al-right minus"><a href="#!">"plus-minus" preset</a></h2>
 <div>
     <p>This example only differs from the previous one by loading the "plus-minus" preset
         which defines a different transformation (plus to minus instead of plus to X):</p>
-    <pre><code class="javascript">$("h2.folding-plus.minus").prependFoldingArrowIcon({
-    preset: "plus-minus",
-    viewboxMargin: 3,
-    separator: ""
-}).setupFoldingArrowIconTransformation({
-    preset: "plus-minus"
-}).click(function(){
-    openOrCloseSection($(this));
-});</code></pre>
+    <pre><code class="javascript">registerSectionClickHandler(
+    $("h2.folding-plus.minus").prependFoldingArrowIcon({
+        preset: "plus-minus",
+        viewboxMargin: 3,
+        separator: ""
+    }).setupFoldingArrowIconTransformation({
+        preset: "plus-minus"
+    })
+);</code></pre>
     <p>The CSS code is shared with the previous demo.</p>
 </div>
 
-<h2 class="sec folding-plus al-right x altered" id="sec-override-x">Manually overriding tranformation</h2>
+<h2 class="sec folding-plus al-right x altered" id="sec-override-x"><a href="#!">Manually overriding tranformation</a></h2>
 <div>
     <p>This demo is not intended to be used as blueprint for achieving the plus-to-minus 
         transformation, since that's, what the previously demonstrated "plus-minus" preset is for.
@@ -1353,9 +1389,11 @@ h2.sec.folding-plus:hover .folding-arrow-icon line {
         alter the transformation setting for this example, defining a different
         fallback transition attribute for browsers not supporting CSS transformations:</p>
          
-    <pre><code class="javascript">$("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
-    transformations: [{"line.v": "scale(1 0)"}]
-});</code></pre>
+    <pre><code class="javascript">registerSectionClickHandler(
+    $("h2.folding-plus.x.altered").setupFoldingArrowIconTransformation({
+        transformations: [{"line.v": "scale(1 0)"}]
+    })
+);</code></pre>
     
     <p>For browsers <em>with</em> CSS transformations support, the CSS has to be overridden,
         and here that's not just the transformation itself but also the according
@@ -1394,16 +1432,19 @@ h2.folding-plus.x.altered.showing .folding-arrow-icon.plus line.v {
 
 
 <div id="burger-menu">
-    <span id="burger"></span>
+    <a href="#!" id="burger"></a>
     <span class="display: inline-block">Click this burger! (In this demo that will not open a menu,
     but display the example code.)</span>
     <div id="burger-content">
         <pre><code class="language-javascript">$("#burger").prependFoldingArrowIcon({
-    preset: "burger"
+    preset: "burger",
+    separator: ""
 }).setupFoldingArrowIconTransformation({
     preset: "burger"
 }).click(function() {
+    ev.preventDefault();
     openOrClose($("#burger"));
+    $("#burger-content").slideToggle();
 });</code></pre>
         <pre><code class="language-css">#burger .burger-icon {
     width: 40px;
