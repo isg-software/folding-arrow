@@ -119,6 +119,8 @@
 		const topleft = -opts.viewboxRadius - opts.viewboxMargin;
 		const widthheight = 2 * (opts.viewboxRadius + opts.viewboxMargin);
 		svg.setAttribute("viewBox", topleft + " " + topleft + " " + widthheight + " " + widthheight);
+		svg.setAttribute("width", widthheight);
+		svg.setAttribute("height", widthheight);
 		svg.setAttribute("class", opts.svgClass);
 		return svg;
 	}
